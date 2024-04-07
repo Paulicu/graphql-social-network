@@ -1,0 +1,8 @@
+# Server '.gitignore' file.
+
+# Ignore node_modules:
+node_modules/
+
+# Ignore environment variables:
+.env
+
