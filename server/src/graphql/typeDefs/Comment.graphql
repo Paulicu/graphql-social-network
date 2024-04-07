@@ -1,0 +1,27 @@
+type Comment {
+    _id: ID!
+    authorId: ID!
+    articleId: ID!
+    content: String!
+    createdAt: String!
+    createdAtFormatted: String!
+    updatedAt: String!
+    updatedAtFormatted: String!
+    article: Article!
+}
+
+type Query {
+    comments: [Comment!]
+}
+
+type Mutation {
+
+    addComment(articleId: ID!, input: CommentInput!): Comment
+    updateComment(commentId: ID!, input: CommentInput!): Comment
+    deleteComment(commentId: ID!): Comment
+}
+
+input CommentInput {
+
+    content: String!
+}

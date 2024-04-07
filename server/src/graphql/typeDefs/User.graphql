@@ -1,0 +1,63 @@
+type User {
+
+    _id: ID!
+    role: Role!
+    firstName: String!
+    lastName: String! 
+    fullName: String!
+    username: String!
+    password: String!
+    email: String!
+    profilePicture: String
+    gender: Gender!
+    createdAt: String!
+    createdAtFormatted: String!
+    totalArticles: Int!
+    articles: [Article]
+}
+
+enum Role {
+
+    ADMIN
+    MEMBER
+}
+
+enum Gender {
+    
+    MALE
+    FEMALE
+}
+
+type Query {
+
+    users: [User!]
+    authUser: User
+    user(userId: ID!): User
+}
+
+type Mutation {
+
+    register(input: RegisterInput!): User
+    login(input: LoginInput!): User
+    logout: LogoutResponse
+}
+
+input RegisterInput {
+
+    username: String!
+    password: String!
+    email: String!
+    name: String!
+    gender: String!
+}
+
+input LoginInput {
+
+    username: String!
+    password: String!
+}
+
+type LogoutResponse {
+    
+    message: String!
+}

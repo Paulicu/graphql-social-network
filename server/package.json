@@ -12,7 +12,11 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@apollo/server": "^4.10.2",
+    "@graphql-tools/merge": "^9.0.3",
     "date-and-time": "^3.1.1",
+    "fs": "^0.0.1-security",
+    "graphql": "^16.8.1",
     "mongoose": "^8.3.0"
   },
   "devDependencies": {

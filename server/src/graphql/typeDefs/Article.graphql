@@ -1,0 +1,35 @@
+type Article {
+    _id: ID!
+    authorId: ID!
+    topicId: ID!
+    title: String!
+    content: String!
+    createdAt: String!
+    createdAtFormatted: String!
+    updatedAt: String!
+    updatedAtFormatted: String!
+    comments: [Comment]
+    totalComments: Int
+    viewers: [User]
+    totalViews: Int
+}
+
+type Query {
+
+    articles: [Article!]
+    article(articleId: ID!): Article
+}
+
+type Mutation {
+
+    createArticle(input: ArticleInput!): Article
+    updateArticle(articleId: ID!, input: ArticleInput!): Article
+    deleteArticle(articleId: ID!): Article
+}
+
+input ArticleInput {
+
+    title: String!
+    content: String!
+    category: String!
+}

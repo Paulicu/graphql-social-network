@@ -1,0 +1,37 @@
+type Topic {
+
+    _id: ID!
+    adminId: ID!
+    title: String!
+    description: String!
+    articles: [Article]
+    createdAt: String!
+    updatedAt: String!
+    totalArticles: Int!
+    status: Status!
+}
+
+enum Status {
+
+    ACTIVE
+    INACTIVE
+}
+
+type Query {
+    
+    topics: [Topic!]
+    topic(topicId: ID!): Topic
+}
+
+type Mutation {
+
+    createTopic(input: TopicInput!): Topic
+    updateTopic(topicId: ID!, input: TopcInput!): Topic
+    deleteTopic(topicId: ID!): Topic
+}
+
+input TopicInput {
+
+    title: String!
+    description: String!
+}
