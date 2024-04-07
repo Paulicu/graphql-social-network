@@ -14,10 +14,17 @@
   "dependencies": {
     "@apollo/server": "^4.10.2",
     "@graphql-tools/merge": "^9.0.3",
+    "archetype": "github:LaurentGoderre/archetype#fix-lodash_set-vuln",
+    "bcrypt": "^5.1.1",
+    "connect-mongodb-session": "^5.0.0",
     "date-and-time": "^3.1.1",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "fs": "^0.0.1-security",
     "graphql": "^16.8.1",
-    "mongoose": "^8.3.0"
+    "graphql-passport": "^0.6.8",
+    "mongoose": "^8.3.0",
+    "passport": "^0.7.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",

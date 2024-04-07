@@ -26,7 +26,7 @@ type Query {
 type Mutation {
 
     createTopic(input: TopicInput!): Topic
-    updateTopic(topicId: ID!, input: TopcInput!): Topic
+    updateTopic(topicId: ID!, input: TopicInput!): Topic
     deleteTopic(topicId: ID!): Topic
 }
 

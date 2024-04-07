@@ -44,10 +44,11 @@ type Mutation {
 
 input RegisterInput {
 
+    firstName: String!
+    lastName: String!
     username: String!
     password: String!
     email: String!
-    name: String!
     gender: String!
 }
 
