@@ -12,6 +12,8 @@ type Article {
     totalComments: Int
     viewers: [User]
     totalViews: Int
+    author: User!
+    topic: Topic!
 }
 
 type Query {
@@ -31,5 +33,5 @@ input ArticleInput {
 
     title: String!
     content: String!
-    category: String!
+    topic: String!
 }

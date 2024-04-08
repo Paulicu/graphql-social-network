@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema(
     viewers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        unique: true
+        // unique: true
     }]
 
 }, { timestamps: true });

@@ -6,8 +6,10 @@ type Topic {
     description: String!
     articles: [Article]
     createdAt: String!
+    createdAtFormatted: String!
     updatedAt: String!
-    totalArticles: Int!
+    updatedAtFormatted: String!
+    totalArticles: Int
     status: Status!
 }
 
