@@ -6,11 +6,22 @@ const articleResolvers = {
 
     Query: {
 
-        articles: async (_, __) => {
+        articles: async (_, { sortBy, topicId }) => {
 
             try {
 
-                const articles = await Article.find();
+                let sortOption = { createdAt: -1 };
+                if (sortBy === "OLDEST") {
+
+                    sortOption = { createdAt: 1 };
+                }
+
+                let query = {};
+                if (topicId) {
+
+                    query = { topicId };
+                }
+                const articles = await Article.find(query).sort(sortOption);
                 return articles;
             } 
             catch (err) {

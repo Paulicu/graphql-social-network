@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
-import { LOGOUT } from '../../graphql/mutations/users';
-import { GET_AUTHENTICATED_USER } from '../../graphql/queries/users';
+import { LOGOUT } from '../../graphql/mutations/user';
+import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user';
 import { FaRegUserCircle } from 'react-icons/fa';
 
 function Icon() {
@@ -65,7 +65,7 @@ function Icon() {
                         { userData.authUser.firstName && (<span className="mr-3">{ userData.authUser.firstName }</span>) }
 
                         <img src={ userData.authUser.profilePicture } alt="Profile Picture" className="w-11 h-11 rounded-full" />
-                    </div>): 
+                    </div>) : 
                     
                     (<FaRegUserCircle className="w-11 h-11" />)
                 }

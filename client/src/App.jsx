@@ -1,15 +1,16 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { useQuery } from "@apollo/client";
-import { GET_AUTHENTICATED_USER } from "./graphql/queries/users";
+import { useQuery } from '@apollo/client';
+import { GET_AUTHENTICATED_USER } from './graphql/queries/user';
 
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import NotFound from "./pages/NotFound";
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Articles from './pages/Articles';
+import NotFound from './pages/NotFound';
 
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 function App() {
 
@@ -28,6 +29,8 @@ function App() {
                 <Route path="/login" element={ !data.authUser ? <Login /> : <Navigate to='/' /> } />
                 <Route path="/register" element={ !data.authUser ? <Register /> : <Navigate to='/' /> } />
 
+                <Route path="/articles" element={<Articles />} />
+              
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
 

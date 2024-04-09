@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { REGISTER } from "../graphql/mutations/users";
+import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { REGISTER } from '../graphql/mutations/user';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 function Register() {
 

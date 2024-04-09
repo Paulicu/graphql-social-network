@@ -1,4 +1,5 @@
 type Article {
+    
     _id: ID!
     authorId: ID!
     topicId: ID!
@@ -18,7 +19,7 @@ type Article {
 
 type Query {
 
-    articles: [Article!]
+    articles(sortBy: SortOption, topicId: ID): [Article!]
     article(articleId: ID!): Article
 }
 
@@ -34,4 +35,10 @@ input ArticleInput {
     title: String!
     content: String!
     topic: String!
+}
+
+enum SortOption {
+
+    NEWEST
+    OLDEST
 }
