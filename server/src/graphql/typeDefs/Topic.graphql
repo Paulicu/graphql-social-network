@@ -5,6 +5,7 @@ type Topic {
     title: String!
     description: String!
     articles: [Article]
+    author: User!
     createdAt: String!
     createdAtFormatted: String!
     updatedAt: String!

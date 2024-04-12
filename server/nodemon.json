@@ -1,4 +1,4 @@
 {
     "ext": "js, json, graphql",
-    "watch": ["server"]
+    "watch": ["src"]
 }

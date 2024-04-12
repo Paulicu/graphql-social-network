@@ -12,8 +12,11 @@ type User {
     gender: Gender!
     createdAt: String!
     createdAtFormatted: String!
-    totalArticles: Int!
+    topics: [Topic]
+    totalTopics: Int
     articles: [Article]
+    totalArticles: Int
+    comments: [Comment]
 }
 
 enum Role {

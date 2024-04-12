@@ -1,6 +1,7 @@
 import Article from '../../models/Article.js';
 import Topic from '../../models/Topic.js';
 import User from '../../models/User.js';
+import Comment from '../../models/Comment.js';
 
 const articleResolvers = {
 
@@ -105,7 +106,7 @@ const articleResolvers = {
                 const isAdmin = currentUser.role === "ADMIN";
                 const isAuthor = article.authorId.toString() === currentUser._id.toString();
 
-                if (!isAdmin && !isAuthor) {
+                if (!isAdmin || !isAuthor) {
 
                     throw new Error("You don't have permission to delete this article.");
                 }
@@ -160,7 +161,7 @@ const articleResolvers = {
                 const isAdmin = currentUser.role === "ADMIN";
                 const isAuthor = article.authorId.toString() === currentUser._id.toString();
 
-                if (!isAdmin && !isAuthor) {
+                if (!isAdmin || !isAuthor) {
 
                     throw new Error("You don't have permission to delete this article.");
                 }
@@ -171,7 +172,7 @@ const articleResolvers = {
                     throw new Error("Failed to delete article!");
                 }
 
-                await User.findByIdAndUpdate(currentUser._id, { $pull: { articles: articleId } }, { new: true });
+                await User.findByIdAndUpdate(article.authorId, { $pull: { articles: articleId } }, { new: true });
                 await Topic.findByIdAndUpdate(article.topicId, { $pull: { articles: articleId } }, { new: true });
 
                 return deletedArticle;
@@ -195,7 +196,7 @@ const articleResolvers = {
             } 
             catch (err) {
                 console.error(err);
-                throw new Error(err.message || "Failed to fetch article author!");
+                throw new Error(err.message || "Failed to fetch article's author!");
             }
         },
 
@@ -209,7 +210,21 @@ const articleResolvers = {
             catch (err) {
 
                 console.error(err);
-                throw new Error(err.message || "Failed to fetch article topic!");
+                throw new Error(err.message || "Failed to fetch article's topic!");
+            }
+        },
+
+        comments: async (parent) => {
+
+            try {
+                
+                const comments = await Comment.find({ articleId: parent._id });
+                return comments;
+            } 
+            catch (err) {
+                
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch article's comments");
             }
         }
     }

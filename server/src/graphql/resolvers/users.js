@@ -1,6 +1,7 @@
 import User from '../../models/User.js';
-
+import Comment from '../../models/Comment.js'
 import Article from '../../models/Article.js';
+import Topic from '../../models/Topic.js';
 
 import bcrypt from 'bcrypt';
 
@@ -52,7 +53,9 @@ const userResolvers = {
     },
 
     Mutation: {
+
         register: async(_, { input }, context) => {
+            
             try {
 
                 const { firstName, lastName, username, password, email, gender } = input;
@@ -166,19 +169,47 @@ const userResolvers = {
 
     User: {
 
+        topics: async (parent) => {
+
+            try {
+                
+                const topics = await Topic.find({ adminId: parent._id });
+                return topics;
+            } 
+            catch (err) {
+                
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch user's topics!");
+            }
+        },
+
 		articles: async (parent) => {
 
 			try {
 
-				const articles = await Article.find({ userId: parent._id });
+				const articles = await Article.find({ authorId: parent._id });
 				return articles;
 			} 
             catch (err) {
                 
 				console.error(err);
-				throw new Error(err.message || "Failed to fetch user articles!");
+				throw new Error(err.message || "Failed to fetch user's articles!");
 			}
-		}
+		},
+
+        comments: async (parent) => {
+
+            try {
+                
+                const comments = await Comment.find({ authorId: parent._id });
+                return comments;
+            } 
+            catch (err) {
+
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch user's comments");
+            }
+        }
 	}
 };
 

@@ -39,9 +39,17 @@ const userSchema = new mongoose.Schema(
         type: String,
         enum: ["MALE", "FEMALE"]
     },
+    topics: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Topic"
+    }],
     articles: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Article"
+    }],
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
     }]
 
 }, { timestamps: true });
@@ -59,6 +67,11 @@ userSchema.virtual('fullName').get(function () {
 userSchema.virtual("totalArticles").get(function () {
 
     return this.articles.length;
+});
+
+userSchema.virtual("totalTopics").get(function () {
+
+    return this.topics.length;
 });
 
 const User = mongoose.model("User", userSchema);

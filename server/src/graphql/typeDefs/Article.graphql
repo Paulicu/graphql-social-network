@@ -1,8 +1,10 @@
 type Article {
     
     _id: ID!
-    authorId: ID!
     topicId: ID!
+    authorId: ID!
+    author: User!
+    topic: Topic!
     title: String!
     content: String!
     createdAt: String!
@@ -13,8 +15,6 @@ type Article {
     totalComments: Int
     viewers: [User]
     totalViews: Int
-    author: User!
-    topic: Topic!
 }
 
 type Query {

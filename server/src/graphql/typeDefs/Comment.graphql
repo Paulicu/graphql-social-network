@@ -1,16 +1,19 @@
 type Comment {
+
     _id: ID!
     authorId: ID!
+    author: User!
     articleId: ID!
+    article: Article!
     content: String!
     createdAt: String!
     createdAtFormatted: String!
     updatedAt: String!
     updatedAtFormatted: String!
-    article: Article!
 }
 
 type Query {
+
     comments: [Comment!]
 }
 
