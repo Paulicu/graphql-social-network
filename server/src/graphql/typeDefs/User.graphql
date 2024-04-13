@@ -17,6 +17,7 @@ type User {
     articles: [Article]
     totalArticles: Int
     comments: [Comment]
+    workouts: [Workout]
 }
 
 enum Role {

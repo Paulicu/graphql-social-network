@@ -2,6 +2,7 @@ import User from '../../models/User.js';
 import Comment from '../../models/Comment.js'
 import Article from '../../models/Article.js';
 import Topic from '../../models/Topic.js';
+import Workout from '../../models/Workout.js';
 
 import bcrypt from 'bcrypt';
 
@@ -207,7 +208,21 @@ const userResolvers = {
             catch (err) {
 
                 console.error(err);
-                throw new Error(err.message || "Failed to fetch user's comments");
+                throw new Error(err.message || "Failed to fetch user's comments!");
+            }
+        },
+
+        workouts: async (parent) => {
+
+            try {
+
+                const workouts = await Workout.find({ authorId: parent._id});
+                return workouts;
+            }
+            catch (err) {
+
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch user's workouts!");
             }
         }
 	}

@@ -16,6 +16,7 @@ import { authConfig } from './config/authConfig.js';
 
 import mergedResolvers from './graphql/resolvers/index.js';
 import mergedTypeDefs from './graphql/typeDefs/index.js';
+import ExercisesAPI from './utils/exercises-api.js';
 
 dotenv.config();
 authConfig();
@@ -60,7 +61,18 @@ app.use(
     "/graphql",
     cors({ origin: "http://localhost:3000", credentials: true }), 
     express.json(),
-    expressMiddleware(server, { context: async ({ req, res }) => buildContext({ req, res }) })
+    expressMiddleware(server, 
+    { 
+        context: async ({ req, res }) => {
+            const authContext = buildContext({ req, res });
+            return {
+                ...authContext,
+                dataSources: {
+                    exercisesAPI: new ExercisesAPI()
+                }
+            }
+        }
+    })
 );
 
 const PORT = process.env.PORT || 5000;

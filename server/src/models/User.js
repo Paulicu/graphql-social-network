@@ -50,6 +50,18 @@ const userSchema = new mongoose.Schema(
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
+    }],
+    workouts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Workout"
+    }],
+    programs: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Program"
+    }],
+    ratings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Rating"
     }]
 
 }, { timestamps: true });

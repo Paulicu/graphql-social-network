@@ -1,0 +1,17 @@
+type Exercise {
+
+    id: String!
+    name: String!
+    bodyPart: String!
+    equipment: String!
+    gifUrl: String!
+    target: String!
+    secondaryMuscles: [String!]!
+    instructions: [String!]!
+}
+
+type Query {
+
+    exercises: [Exercise!]!
+    exerciseById(exerciseId: String!): Exercise
+}

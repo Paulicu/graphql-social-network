@@ -1,0 +1,34 @@
+type Workout {
+
+    _id: ID!
+    authorId: ID!
+    author: User!
+    exercises: [WorkoutExercise]
+    createdAt: String!
+    updatedAt: String!
+}
+
+type WorkoutExercise {
+
+    exercise: Exercise!
+    sets: Int
+    repetitions: Int
+}
+
+input ExerciseInput {
+
+    exerciseId: String!
+    sets: Int
+    repetitions: Int
+}
+
+type Query {
+
+    workouts: [Workout]
+}
+
+type Mutation {
+
+    createWorkout(exercises: [ExerciseInput]): Workout!
+    deleteWorkout(workoutId: ID!): Workout
+}
