@@ -106,12 +106,11 @@ const articleResolvers = {
                 const isAdmin = currentUser.role === "ADMIN";
                 const isAuthor = article.authorId.toString() === currentUser._id.toString();
 
-                if (!isAdmin || !isAuthor) {
+                if (!isAdmin && !isAuthor) {
 
-                    throw new Error("You don't have permission to delete this article.");
+                    throw new Error("You don't have permission to update this article.");
                 }
 
-                
                 if (input.topic) {
 
                     const topic = await Topic.findOne({ title: input.topic });
@@ -161,7 +160,7 @@ const articleResolvers = {
                 const isAdmin = currentUser.role === "ADMIN";
                 const isAuthor = article.authorId.toString() === currentUser._id.toString();
 
-                if (!isAdmin || !isAuthor) {
+                if (!isAdmin && !isAuthor) {
 
                     throw new Error("You don't have permission to delete this article.");
                 }
@@ -174,7 +173,8 @@ const articleResolvers = {
 
                 await User.findByIdAndUpdate(article.authorId, { $pull: { articles: articleId } }, { new: true });
                 await Topic.findByIdAndUpdate(article.topicId, { $pull: { articles: articleId } }, { new: true });
-
+                await Comment.deleteMany({ articleId });
+                
                 return deletedArticle;
             } 
             catch (err) {
@@ -191,10 +191,11 @@ const articleResolvers = {
 
             try {
 
-              const author = await User.findById(parent.authorId);
-              return author;
+                const author = await User.findById(parent.authorId);
+                return author;
             } 
             catch (err) {
+
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch article's author!");
             }

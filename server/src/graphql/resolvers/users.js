@@ -198,20 +198,6 @@ const userResolvers = {
 			}
 		},
 
-        comments: async (parent) => {
-
-            try {
-                
-                const comments = await Comment.find({ authorId: parent._id });
-                return comments;
-            } 
-            catch (err) {
-
-                console.error(err);
-                throw new Error(err.message || "Failed to fetch user's comments!");
-            }
-        },
-
         workouts: async (parent) => {
 
             try {

@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Articles from './pages/Articles';
+import Article from './pages/Article';
 import NotFound from './pages/NotFound';
 
 import Header from './components/Header/Header';
@@ -17,7 +18,7 @@ function App() {
     const { loading, error, data } = useQuery(GET_AUTHENTICATED_USER);
 
 	if (loading) return <p>Loading...</p>;
-    if (error) return <p>Something went wrong! {error.message}</p>;
+    if (error) return <p>Something went wrong! { error.message }</p>;
 
     return (
         
@@ -29,8 +30,9 @@ function App() {
                 <Route path="/login" element={ !data.authUser ? <Login /> : <Navigate to='/' /> } />
                 <Route path="/register" element={ !data.authUser ? <Register /> : <Navigate to='/' /> } />
 
-                <Route path="/articles" element={<Articles />} />
-              
+                <Route path="/articles" element={ <Articles /> } />
+                <Route path="/article/:articleId" element={ <Article /> } />
+
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
 

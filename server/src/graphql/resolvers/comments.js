@@ -4,7 +4,22 @@ import User from '../../models/User.js';
 
 const commentResolvers = {
 
-    Query: {},
+    Query: {
+
+        commentsByArticle: async (_, { articleId }) => {
+
+            try {
+                
+                const comments = await Comment.find({ articleId });
+                return comments;
+            } 
+            catch (err) {
+                
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch comments by article!");
+            }
+        }
+    },
 
     Mutation: {
 
@@ -20,7 +35,8 @@ const commentResolvers = {
                     throw new Error("You must be logged in!");
                 }
 
-                const newComment = new Comment({
+                const newComment = new Comment(
+                {
 
                     content,
                     authorId: currentUser._id,
@@ -60,9 +76,9 @@ const commentResolvers = {
                 const isAdmin = currentUser.role === "ADMIN";
                 const isAuthor = currentUser._id.toString() === comment.authorId.toString();
 
-                if (!isAdmin || !isAuthor) {
+                if (!isAdmin && !isAuthor) {
 
-                    throw new Error("You are not authorized to delete this comment!");
+                    throw new Error("You are not authorized to edit this comment!");
                 }
 
                 comment.content = input.content;
@@ -96,7 +112,7 @@ const commentResolvers = {
                 const isAdmin = currentUser.role === "ADMIN";
                 const isAuthor = currentUser._id.toString() === comment.authorId.toString();
 
-                if (!isAdmin || !isAuthor) {
+                if (!isAdmin && !isAuthor) {
 
                     throw new Error("You are not authorized to delete this comment!");
                 }

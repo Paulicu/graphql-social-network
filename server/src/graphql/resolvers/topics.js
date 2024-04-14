@@ -136,7 +136,7 @@ const topicResolvers = {
 
             try {
 
-              const author = await User.findById(parent.authorId);
+              const author = await User.findById(parent.adminId);
               return author;
             } 
             catch (err) {

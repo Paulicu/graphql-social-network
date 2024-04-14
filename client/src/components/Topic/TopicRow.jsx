@@ -1,4 +1,7 @@
-function TopicRow({ topic, onSelectTopic, selectedTopic }) {
+import DeleteTopicButton from './DeleteTopicButton';
+import UpdateTopicModal from './UpdateTopicModal';
+
+function TopicRow({ topic, onSelectTopic, selectedTopic, currentUser }) {
 
     return (
 
@@ -10,13 +13,20 @@ function TopicRow({ topic, onSelectTopic, selectedTopic }) {
                     </p>
 
                     <p className={ `truncate text-sm ${ topic.status === 'ACTIVE' ? 'text-green-500' : 'text-red-500' }` }>
-                        { topic.status }
+                        { topic.status }: { topic.totalArticles } articles
                     </p>
                 </div>
 
-                <div className="inline-flex items-center text-base font-semibold text-gray-900">
-                    Articles: { topic.totalArticles }
-                </div>
+               
+            </div> 
+
+            <div className="inline-flex items-center text-base text-gray-900 mt-2">
+                { (currentUser && currentUser.role === "ADMIN") && (
+                    <>
+                        <UpdateTopicModal topic={ topic } />
+                        <DeleteTopicButton topicId={ topic._id } />
+                    </>)
+                }
             </div>
         </li>
     );

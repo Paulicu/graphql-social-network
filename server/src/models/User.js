@@ -47,10 +47,6 @@ const userSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Article"
     }],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment"
-    }],
     workouts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Workout"

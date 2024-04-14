@@ -14,7 +14,7 @@ type Comment {
 
 type Query {
 
-    comments: [Comment!]
+    commentsByArticle(articleId: ID!): [Comment]
 }
 
 type Mutation {

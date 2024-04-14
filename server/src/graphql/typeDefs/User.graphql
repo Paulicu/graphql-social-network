@@ -16,7 +16,6 @@ type User {
     totalTopics: Int
     articles: [Article]
     totalArticles: Int
-    comments: [Comment]
     workouts: [Workout]
 }
 

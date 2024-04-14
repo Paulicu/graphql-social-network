@@ -6,6 +6,7 @@ export const GET_TOPICS = gql`
             _id
             title
             status
+            description
             totalArticles
         }
     }

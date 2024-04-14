@@ -22,3 +22,27 @@ export const GET_ARTICLES = gql`
         }
     }
 `;
+
+export const GET_ARTICLE = gql`
+    query GetArticle($id: ID!) {
+        article(articleId: $id) {
+            _id
+            title
+            content
+            createdAtFormatted
+            updatedAtFormatted
+            totalComments
+            totalViews
+            topic {
+                _id
+                title
+                description
+            }
+            author {
+                _id
+                fullName
+                profilePicture
+            }
+        }
+    }
+`;
