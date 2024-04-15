@@ -3,6 +3,10 @@ import Topic from '../../models/Topic.js';
 import User from '../../models/User.js';
 import Comment from '../../models/Comment.js';
 
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+
 const articleResolvers = {
 
     Query: {
@@ -76,7 +80,9 @@ const articleResolvers = {
                 });
         
                 await newArticle.save();
-                
+
+                pubsub.publish('NEW_ARTICLE', { newArticleSubscription: newArticle });
+
                 await User.findByIdAndUpdate(currentUser._id, { $push: { articles: newArticle._id } }, { new: true });
                 await Topic.findByIdAndUpdate(topic._id, { $push: { articles: newArticle._id } }, { new: true });
 
@@ -185,6 +191,15 @@ const articleResolvers = {
         }
     },
 
+    Subscription: {
+
+        newArticleSubscription: {
+
+            // TODO: maybe add a filter for this:
+            subscribe: () => pubsub.asyncIterator(['NEW_ARTICLE'])
+        }
+    },
+    
     Article: {
 
         author: async (parent) => {

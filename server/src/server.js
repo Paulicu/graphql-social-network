@@ -13,6 +13,9 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { buildContext } from 'graphql-passport';
 import { dbConnection }  from './config/dbConnection.js';
 import { authConfig } from './config/authConfig.js';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 
 import mergedResolvers from './graphql/resolvers/index.js';
 import mergedTypeDefs from './graphql/typeDefs/index.js';
@@ -48,11 +51,34 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const typeDefs = mergedTypeDefs;
+const resolvers = mergedResolvers;
+
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+const wsServer = new WebSocketServer(
+{
+    server: httpServer,
+    path: '/graphql',
+});
+
+const serverCleanup = useServer({ schema }, wsServer);
+  
 const server = new ApolloServer(
 {
-    typeDefs: mergedTypeDefs,
-    resolvers: mergedResolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+    schema,
+    plugins: [
+        ApolloServerPluginDrainHttpServer({ httpServer }),
+        {
+            async serverWillStart() {
+                return {
+                    async drainServer() {
+                        await serverCleanup.dispose();
+                    },
+                };
+            },
+        },
+    ]
 });
 
 await server.start();

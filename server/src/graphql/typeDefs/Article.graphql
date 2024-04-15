@@ -30,6 +30,11 @@ type Mutation {
     deleteArticle(articleId: ID!): Article
 }
 
+type Subscription {
+
+    newArticleSubscription: Article
+}
+
 input ArticleInput {
 
     title: String!
