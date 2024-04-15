@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-
 import { useQuery } from '@apollo/client';
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user';
 
@@ -8,10 +7,15 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Articles from './pages/Articles';
 import Article from './pages/Article';
+import Exercises from './pages/Exercises';
+import Exercise from './pages/Exercise';
+import Workouts from './pages/Workouts';
+import Workout from './pages/Workout';
 import NotFound from './pages/NotFound';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+
 
 function App() {
 
@@ -32,6 +36,12 @@ function App() {
 
                 <Route path="/articles" element={ <Articles /> } />
                 <Route path="/article/:articleId" element={ <Article /> } />
+
+                <Route path="/exercises" element={ <Exercises /> } />
+                <Route path="/exercise/:exerciseId" element={ <Exercise /> } />
+
+                <Route path="/workouts" element={ <Workouts /> } />
+                <Route path="/workout/:workoutId" element={ <Workout /> } />
 
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
