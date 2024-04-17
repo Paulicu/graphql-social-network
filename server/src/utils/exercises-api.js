@@ -2,14 +2,20 @@ import { RESTDataSource } from '@apollo/datasource-rest';
 
 class ExercisesAPI extends RESTDataSource {
 
-    constructor() {
+    constructor(options) {
 
-        super();
+        super(options);
         this.baseURL = process.env.API_URL;
         this.key = process.env.API_KEY;
         this.host = process.env.API_HOST;
+        this.cache = options.cache;
     }
     
+    cacheOptionsFor() {
+        
+        return { ttl: 1000 * 60 * 60 * 24 * 7 };
+    }
+
     willSendRequest(_path, request) {
 
         request.headers['X-RapidAPI-Host'] = this.host;
@@ -18,12 +24,27 @@ class ExercisesAPI extends RESTDataSource {
 
     async getExercises() {
 
-        return this.get('/exercises');
+        return this.get(`/exercises?limit=9999`);
     }
 
     async getExerciseById(id) {
 
         return this.get(`/exercises/exercise/${id}`);
+    }
+
+    async getBodyPartList() {
+
+        return this.get('exercises/bodyPartList');
+    }
+
+    async getTargetList() {
+
+        return this.get('exercises/targetList');
+    }
+
+    async getEquipmentList() {
+
+        return this.get('exercises/equipmentList');
     }
 }
 

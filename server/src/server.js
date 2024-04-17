@@ -91,10 +91,11 @@ app.use(
     { 
         context: async ({ req, res }) => {
             const authContext = buildContext({ req, res });
+            const { cache } = server;
             return {
                 ...authContext,
                 dataSources: {
-                    exercisesAPI: new ExercisesAPI()
+                    exercisesAPI: new ExercisesAPI({ cache })
                 }
             }
         }

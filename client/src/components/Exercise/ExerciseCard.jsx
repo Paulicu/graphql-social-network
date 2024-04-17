@@ -11,6 +11,10 @@ function ExerciseCard({ exercise, isSelected, onSelect }) {
 
             <div className="flex items-center justify-between mb-2">
                 <p className="text-gray-500">
+                    Equipment: { exercise.equipment }
+                </p>
+
+                <p className="text-gray-500">
                     Body Part: { exercise.bodyPart }
                 </p>
 

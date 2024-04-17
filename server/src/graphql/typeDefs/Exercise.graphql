@@ -12,6 +12,9 @@ type Exercise {
 
 type Query {
 
-    exercises: [Exercise!]!
+    exercises(equipment: [String], bodyParts: [String], targets: [String]): [Exercise!]!
     exerciseById(exerciseId: String!): Exercise
+    bodyPartList: [String!]!
+    targetList: [String!]!
+    equipmentList: [String!]!
 }

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_EXERCISES = gql`
-    query GetExercises {
-        exercises {
+    query GetExercises($equipment: [String], $bodyParts: [String], $targets: [String]) {
+        exercises(equipment: $equipment, bodyParts: $bodyParts, targets: $targets) {
             id
             name
             bodyPart
@@ -25,5 +25,13 @@ export const GET_EXERCISE_BY_ID = gql`
             secondaryMuscles
             instructions
         }
+    }
+`;
+
+export const GET_EXERCISE_FILTERS = gql`
+    query GetExerciseFilters {
+        equipmentList
+        bodyPartList
+        targetList
     }
 `;

@@ -130,7 +130,7 @@ const workoutResolvers = {
             catch (err) {
 
                 console.error(err);
-                throw new Error(err.message || "Failed to workout's exercises!");
+                throw new Error(err.message || "Failed to fetch workout's exercises!");
             }
         }
     }
