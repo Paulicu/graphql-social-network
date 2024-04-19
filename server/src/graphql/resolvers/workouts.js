@@ -1,6 +1,8 @@
 import Workout from '../../models/Workout.js';
 import User from '../../models/User.js';
 
+import muscleMap from '../../utils/muscleMap.js';
+
 const workoutResolvers = {
 
     Query: {
@@ -22,20 +24,51 @@ const workoutResolvers = {
 
     Mutation: {
 
-        createWorkout: async (_, { exercises }, context) => {
+        createWorkout: async (_, { input }, context) => {
 
             try {
 
-                const currentUser = context.getUser();
+                const { getUser, dataSources } = context;
+                
+                const currentUser = getUser();
+
                 if (!currentUser) {
 
                     throw new Error("You must be logged in to create a workout!");
                 }
 
+                const { title, difficulty, description, exercises } = input;
+
+                let equipmentList = [];
+                let muscleGroupsList = [];
+
+                for (const exerciseInput of exercises) {
+
+                    const exercise = await dataSources.exercisesAPI.getExerciseById(exerciseInput.exerciseId);
+                    
+                    if (!exercise) {
+
+                        throw new Error(`Exercise with ID ${exerciseInput.exerciseId} was not found.`);
+                    }
+                    
+                    equipmentList.push(exercise.equipment);
+                    
+                    const mappedMuscleGroup = muscleMap[exercise.target];
+                    muscleGroupsList.push(mappedMuscleGroup); 
+                }
+                
+                equipmentList = [...new Set(equipmentList)];
+                muscleGroupsList = [...new Set(muscleGroupsList)];
+
                 const workout = new Workout(
                 {
                     authorId: currentUser._id,
-                    exercises
+                    title,
+                    difficulty,
+                    description,
+                    exercises,
+                    equipment: equipmentList,
+                    muscleGroups: muscleGroupsList
                 });
 
                 await workout.save();

@@ -15,9 +15,9 @@ function ExerciseFilters({ selectedFilters, onChange }) {
 
     return (
 
-        <div className="grid grid-cols-3 gap-4">
-            <div>
-                <h3>
+        <div className="grid grid-cols-3 gap-4 bg-white rounded-md shadow-md p-4">
+            <div className="col-span-1">
+                <h3 className="mb-2 text-lg font-semibold">
                     Equipment
                 </h3>
 
@@ -37,8 +37,8 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                 </div>
             </div>
 
-            <div>
-                <h3>
+            <div className="col-span-1">
+                <h3 className="mb-2 text-lg font-semibold">
                     Body Parts
                 </h3>
 
@@ -58,8 +58,8 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                 </div>
             </div>
 
-            <div>
-                <h3>
+            <div className="col-span-1">
+                <h3 className="mb-2 text-lg font-semibold">
                     Target Muscles
                 </h3>
 

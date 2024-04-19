@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_WORKOUT = gql`
-    mutation CreateWorkout($exercises: [ExerciseInput]) {
-        createWorkout(exercises: $exercises) {
+    mutation CreateWorkout($input: WorkoutInput!) {
+        createWorkout(input: $input) {
             _id
             author {
                 _id

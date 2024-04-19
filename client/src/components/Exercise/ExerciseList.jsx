@@ -7,12 +7,7 @@ import ExerciseFilters from './ExerciseFilters';
 
 function ExerciseList({ selectedExercises, onSelectExercise }) {
 
-    const [selectedFilters, setSelectedFilters] = useState(
-    {
-        equipment: [],
-        bodyParts: [],
-        targets: [],
-    });
+    const [selectedFilters, setSelectedFilters] = useState({ equipment: [], bodyParts: [], targets: [] });
 
     const { loading, error, data } = useQuery(GET_EXERCISES, 
     {
