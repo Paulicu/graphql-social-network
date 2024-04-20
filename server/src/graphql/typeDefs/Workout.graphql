@@ -50,6 +50,7 @@ enum Difficulty {
 type Query {
 
     workouts: [Workout]
+    workout(workoutId: ID!): Workout
 }
 
 type Mutation {

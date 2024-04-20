@@ -6,6 +6,8 @@ import articleResolvers from './articles.js';
 import commentResolvers from './comments.js';
 import exerciseResolvers from './exercises.js';
 import workoutResolvers from './workouts.js';
+import programResolvers from './programs.js';
+import ratingResolvers from './ratings.js';
 
 const mergedResolvers = mergeResolvers([
     
@@ -14,7 +16,9 @@ const mergedResolvers = mergeResolvers([
     articleResolvers,
     commentResolvers,
     exerciseResolvers,
-    workoutResolvers
+    workoutResolvers,
+    programResolvers,
+    ratingResolvers
 ]);
 
 export default mergedResolvers;

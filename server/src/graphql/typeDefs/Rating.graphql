@@ -1,0 +1,28 @@
+type Rating {
+    
+    _id: ID!
+    authorId: ID!
+    programId: ID! 
+    stars: Int!
+    message: String
+    author: User!
+    program: Program!
+}
+
+input RatingInput {
+
+    stars: Int!
+    message: String
+}
+
+type Query {
+
+    ratingsByProgram(programId: ID!): [Rating]
+}
+
+type Mutation {
+
+    addRating(programId: ID!, input: RatingInput!): Rating
+    updateRating(ratingId: ID!, input: RatingInput!): Rating
+    deleteRating(ratingId: ID!): Rating
+}

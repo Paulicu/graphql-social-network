@@ -19,6 +19,20 @@ const workoutResolvers = {
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch workouts!");
             }
+        },
+
+        workout: async (_, { workoutId }) => {
+
+            try {
+
+                const workout = Workout.findById(workoutId);
+                return workout;
+            }
+            catch (err) {
+
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch workout!");
+            }
         }
     },
 

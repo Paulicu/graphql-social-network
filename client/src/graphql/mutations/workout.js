@@ -25,3 +25,12 @@ export const CREATE_WORKOUT = gql`
         }
     }
 `;
+
+export const DELETE_WORKOUT = gql`
+    mutation DeleteWorkout($workoutId: ID!) {
+        deleteWorkout(workoutId: $workoutId) {
+            _id
+            title
+        }
+    }
+`;

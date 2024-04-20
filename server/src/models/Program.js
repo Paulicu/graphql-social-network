@@ -7,9 +7,21 @@ const programSchema = new mongoose.Schema(
         ref: "User",
         required: true
     },
-    workouts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Workout"
+    title: {
+        type: String,
+        required: true
+    },
+    days: [{
+        dayNumber: {
+            type: Number,  
+            min: 1,
+            max: 7,
+            required: true
+        },
+        workoutId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Workout"
+        }
     }],
     ratings: [{
         type: mongoose.Schema.Types.ObjectId,

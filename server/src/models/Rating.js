@@ -7,9 +7,9 @@ const ratingSchema = new mongoose.Schema(
         ref: "User",
         required: true
     },
-    workoutId: {
+    programId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Workout",
+        ref: "Program",
         required: true
     },
     stars: {
