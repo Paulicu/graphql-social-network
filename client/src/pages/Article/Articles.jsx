@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_AUTHENTICATED_USER } from '../graphql/queries/user';
+import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user';
 
-import TopicList from '../components/Topic/TopicList';
-import ArticleList from '../components/Article/ArticleList';
-import SortDropdown from '../components/Article/SortDropdown';
-import AddArticleModal from '../components/Article/AddArticleModal';
+import TopicList from '../../components/Topic/TopicList';
+import ArticleList from '../../components/Article/ArticleList';
+import SortDropdown from '../../components/Article/SortDropdown';
+import AddArticleModal from '../../components/Article/AddArticleModal';
 
 function Articles() {
 

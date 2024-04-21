@@ -134,7 +134,7 @@ const ratingResolvers = {
             catch (err) {
 
                 console.error(err);
-                throw new Error(err.message || "Failed to delete rating.");
+                throw new Error(err.message || "Failed to delete rating!");
             }
         }
     },
@@ -150,7 +150,7 @@ const ratingResolvers = {
             catch (err) {
 
                 console.error(err);
-                throw new Error(err.message || "Failed to fetch rating's author.");
+                throw new Error(err.message || "Failed to fetch rating's author!");
             }
         },
 
@@ -164,7 +164,7 @@ const ratingResolvers = {
             catch (err) {
 
                 console.error(err);
-                throw new Error(err.message || "Failed to fetch rated program.");
+                throw new Error(err.message || "Failed to fetch rated program!");
             }
         }
     }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import date from 'date-and-time';
 
 const ratingSchema = new mongoose.Schema(
 {
@@ -24,6 +25,16 @@ const ratingSchema = new mongoose.Schema(
     }
     
 }, { timestamps: true });
+
+ratingSchema.virtual("createdAtFormatted").get(function () {
+    
+    return date.format(this.createdAt, "dddd MMM DD, YYYY, HH:mm");
+});
+
+ratingSchema.virtual("updatedAtFormatted").get(function () {
+    
+    return date.format(this.updatedAt, "dddd MMM DD, YYYY, HH:mm");
+});
 
 const Rating = mongoose.model("Rating", ratingSchema);
 

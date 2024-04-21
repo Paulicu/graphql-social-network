@@ -1,14 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
-import { GET_ARTICLE } from '../graphql/queries/article';
-import { GET_AUTHENTICATED_USER } from '../graphql/queries/user';
+import { GET_ARTICLE } from '../../graphql/queries/article';
+import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user';
 import { FaArrowLeft } from 'react-icons/fa';
 
-import UpdateArticleModal from '../components/Article/UpdateArticleModal';
-import DeleteArticleButton from '../components/Article/DeleteArticleButton';
-import AddCommentForm from '../components/Comment/AddCommentForm';
-import CommentList from '../components/Comment/CommentList';
+import UpdateArticleModal from '../../components/Article/UpdateArticleModal';
+import DeleteArticleButton from '../../components/Article/DeleteArticleButton';
+import AddCommentForm from '../../components/Comment/AddCommentForm';
+import CommentList from '../../components/Comment/CommentList';
 
 function Article() {
 

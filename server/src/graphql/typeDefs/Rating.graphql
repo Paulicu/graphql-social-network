@@ -5,6 +5,8 @@ type Rating {
     programId: ID! 
     stars: Int!
     message: String
+    createdAtFormatted: String!
+    updatedAtFormatted: String!
     author: User!
     program: Program!
 }

@@ -4,6 +4,13 @@ type Program {
     authorId: ID!
     author: User!
     title: String!
+    goal: String!
+    createdAtFormatted: String!
+    updatedAtFormatted: String!
+    ratings: [Rating]
+    averageRating: Float
+    totalWorkouts: Int
+    totalRatings: Int
     days: [Day!]
 }
 
@@ -11,11 +18,13 @@ type Day {
 
     dayNumber: Int!
     workout: Workout
+    isRestDay: Boolean!
 }
 
 input ProgramInput {
 
     title: String!
+    goal: String!
     days: [DayInput!]!
 }
 

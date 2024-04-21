@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { LOGIN } from '../graphql/mutations/user';
+import { LOGIN } from '../../graphql/mutations/user';
 
 function Login() {
 

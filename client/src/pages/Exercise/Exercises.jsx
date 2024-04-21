@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import ExerciseList from '../components/Exercise/ExerciseList';
-import WorkoutForm from '../components/Workout/WorkoutForm';
+import ExerciseList from '../../components/Exercise/ExerciseList';
+import WorkoutForm from '../../components/Workout/WorkoutForm';
 
 function Exercises() {
 

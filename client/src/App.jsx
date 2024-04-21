@@ -2,16 +2,18 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user';
 
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Articles from './pages/Articles';
-import Article from './pages/Article';
-import Exercises from './pages/Exercises';
-import Exercise from './pages/Exercise';
-import Workouts from './pages/Workouts';
-import Workout from './pages/Workout';
-import NotFound from './pages/NotFound';
+import Home from './pages/Home/Home';
+import Login from './pages/Authentication/Login';
+import Register from './pages/Authentication/Register';
+import Articles from './pages/Article/Articles';
+import Article from './pages/Article/Article';
+import Exercises from './pages/Exercise/Exercises';
+import Exercise from './pages/Exercise/Exercise';
+import Workouts from './pages/Workout/Workouts';
+import Workout from './pages/Workout/Workout';
+import Programs from './pages/Program/Programs';
+import Program from './pages/Program/Program';
+import NotFound from './pages/NotFound/NotFound';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -42,6 +44,9 @@ function App() {
 
                 <Route path="/workouts" element={ <Workouts /> } />
                 <Route path="/workout/:workoutId" element={ <Workout /> } />
+
+                <Route path="/programs" element={ <Programs /> } />
+                <Route path="/program/:programId" element={ <Program /> } />
 
                 <Route path="*" element={ <NotFound /> } />
             </Routes>

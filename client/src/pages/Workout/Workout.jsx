@@ -1,18 +1,16 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_WORKOUT } from '../graphql/queries/workout';
+import { GET_WORKOUT } from '../../graphql/queries/workout';
 
-import DeleteWorkoutButton from '../components/Workout/DeleteWorkoutButton';
-import ExerciseDetails from '../components/Exercise/ExerciseDetails';
-import WorkoutImage from '../components/Workout/WorkoutImage';
+import DeleteWorkoutButton from '../../components/Workout/DeleteWorkoutButton';
+import ExerciseDetails from '../../components/Exercise/ExerciseDetails';
+import WorkoutImage from '../../components/Workout/WorkoutImage';
 
 function Workout() {
 
     const { workoutId } = useParams();
 
-    const { loading, error, data } = useQuery(GET_WORKOUT, {
-        variables: { workoutId },
-    });
+    const { loading, error, data } = useQuery(GET_WORKOUT, { variables: { workoutId } });
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! {error.message}</p>;

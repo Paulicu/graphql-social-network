@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_EXERCISE_BY_ID } from '../graphql/queries/exercise';
+import { GET_EXERCISE_BY_ID } from '../../graphql/queries/exercise';
 
-import ExerciseDetails from '../components/Exercise/ExerciseDetails';
+import ExerciseDetails from '../../components/Exercise/ExerciseDetails';
 
 function Exercise() {
 
