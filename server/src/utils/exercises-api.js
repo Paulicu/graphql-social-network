@@ -52,13 +52,13 @@ class ExercisesAPI extends RESTDataSource {
         const searchKey = `search:${ name.toLowerCase() }`;
         const cachedSearch = await this.cache.get(searchKey);
         if (cachedSearch) {
+
             return JSON.parse(cachedSearch);
         }
         
         const data = await this.get(`/exercises/name/${ name }`);
-        if (data.length > 0) {
-            this.cache.set(searchKey, JSON.stringify(data), this.cacheOptionsFor());
-        }
+        this.cache.set(searchKey, JSON.stringify(data), this.cacheOptionsFor());
+        
         return data;
     }
 

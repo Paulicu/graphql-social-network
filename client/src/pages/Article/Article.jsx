@@ -2,8 +2,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { GET_ARTICLE } from '../../graphql/queries/article';
-import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user';
 import { FaArrowLeft } from 'react-icons/fa';
+import { useAuth } from '../../utils/context';
 
 import UpdateArticleModal from '../../components/Article/UpdateArticleModal';
 import DeleteArticleButton from '../../components/Article/DeleteArticleButton';
@@ -12,16 +12,16 @@ import CommentList from '../../components/Comment/CommentList';
 
 function Article() {
 
+    const currentUser = useAuth();
+
     const { articleId } = useParams();
     const { loading, data, error } = useQuery(GET_ARTICLE, { variables: { id: articleId } });
-
-    const { data: userData } = useQuery(GET_AUTHENTICATED_USER);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! { error.message }</p>;
 
     const article = data.article;
-    const currentUser = userData.authUser;
+    
     const isAuthor = currentUser && article.author._id === currentUser._id;
     const isAdmin = currentUser && (currentUser.role === "ADMIN");
 
@@ -40,8 +40,8 @@ function Article() {
                         <>
                             <UpdateArticleModal article={article} />
                             <DeleteArticleButton articleId={article._id} />
-                        </>
-                    )}
+                        </>)
+                    }
                 </div>
                 <h1 className="text-3xl font-semibold mb-4">{ article.title }</h1>
 
@@ -61,7 +61,7 @@ function Article() {
                     Comments ({ article.totalComments })
                 </h2>
 
-                <CommentList articleId={ article._id } currentUser={ currentUser } />
+                <CommentList articleId={ article._id } />
             </div>
 
             <div className="w-1/3 mr-4 ml-4 mt-4 bg-white rounded-md border border-gray-300 p-4">

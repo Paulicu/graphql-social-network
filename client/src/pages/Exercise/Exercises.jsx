@@ -1,10 +1,11 @@
 import { useState } from 'react';
-
+import { useAuth } from '../../utils/context';
 import ExerciseList from '../../components/Exercise/ExerciseList';
 import WorkoutForm from '../../components/Workout/WorkoutForm';
 
 function Exercises() {
 
+    const currentUser = useAuth();
     const [selectedExercises, setSelectedExercises] = useState([]);
 
     const handleSelectExercise = (exercise) => {
@@ -22,7 +23,7 @@ function Exercises() {
             </div>
 
             <div className="w-1/3 mr-4 ml-4 mt-4">
-                <WorkoutForm selectedExercises={ selectedExercises } setSelectedExercises={ setSelectedExercises } />
+                { currentUser && (<WorkoutForm selectedExercises={ selectedExercises } setSelectedExercises={ setSelectedExercises } />) }
             </div>
         </div>
     );

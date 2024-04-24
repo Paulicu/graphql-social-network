@@ -18,6 +18,7 @@ import NotFound from './pages/NotFound/NotFound';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
+import { AuthContext } from './utils/context';
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
 
     return (
         
-        <>
+        <AuthContext.Provider value={ data.authUser }>
             <Header />
       
             <Routes>
@@ -52,7 +53,7 @@ function App() {
             </Routes>
 
             <Footer />
-        </>
+        </AuthContext.Provider>
     );
 }
 

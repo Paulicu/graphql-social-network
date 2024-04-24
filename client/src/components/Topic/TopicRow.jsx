@@ -1,7 +1,10 @@
+import { useAuth } from '../../utils/context';
 import DeleteTopicButton from './DeleteTopicButton';
 import UpdateTopicModal from './UpdateTopicModal';
 
-function TopicRow({ topic, onSelectTopic, selectedTopic, currentUser }) {
+function TopicRow({ topic, onSelectTopic, selectedTopic }) {
+
+    const currentUser = useAuth();
 
     return (
 

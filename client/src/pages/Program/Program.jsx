@@ -5,9 +5,11 @@ import { GET_PROGRAM } from '../../graphql/queries/program';
 import AddRatingForm from '../../components/Rating/AddRatingForm';
 import RatingList from '../../components/Rating/RatingList';
 import DeleteProgramButton from '../../components/Program/DeleteProgramButton';
+import { useAuth } from '../../utils/context';
 
 function Program() {
     
+    const currentUser = useAuth();
     const { programId } = useParams();
     const { loading, data, error } = useQuery(GET_PROGRAM, { variables: { programId } });
 
@@ -15,12 +17,14 @@ function Program() {
     if (error) return <p>Something went wrong! { error.message }</p>;
 
     const program = data.program;
+    const isAuthor = currentUser && program.author._id === currentUser._id;
+    const isAdmin = currentUser && (currentUser.role === "ADMIN");
 
     return (
 
         // To do: Initial data check, update later
         <div>
-            <DeleteProgramButton programId={ program._id }/>
+            { (isAdmin || isAuthor) && (<DeleteProgramButton programId={ program._id } />) }
 
             <h1>{program.title}</h1>
             <p>Goal: {program.goal}</p>

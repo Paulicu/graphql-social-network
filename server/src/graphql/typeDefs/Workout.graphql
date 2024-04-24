@@ -33,6 +33,13 @@ input WorkoutInput {
     exercises: [ExerciseInput]!
 }
 
+input WorkoutInfoInput {
+
+    title: String!
+    difficulty: String!
+    description: String
+}
+
 input ExerciseInput {
 
     exerciseId: String!
@@ -50,11 +57,15 @@ enum Difficulty {
 type Query {
 
     workouts: [Workout]
+    workoutsByAuthor(authorId: ID!): [Workout]
     workout(workoutId: ID!): Workout
 }
 
 type Mutation {
 
     createWorkout(input: WorkoutInput!): Workout!
+    updateWorkoutInfo(workoutId: ID!, input: WorkoutInfoInput!): Workout
     deleteWorkout(workoutId: ID!): Workout
+    addExerciseToWorkout(workoutId: ID!, input: ExerciseInput!): Workout
+    removeExerciseFromWorkout(workoutId: ID!, exerciseId: String!): Workout
 }

@@ -44,6 +44,7 @@ export const GET_WORKOUT = gql`
             }
             exercises {
                 exercise {
+                    id
                     name
                     bodyPart
                     equipment
@@ -55,6 +56,15 @@ export const GET_WORKOUT = gql`
                 sets
                 repetitions
             }
+        }
+    }
+`;
+
+export const GET_WORKOUTS_BY_AUTHOR = gql`
+    query GetWorkoutsByAuthor($authorId: ID!) {
+        workoutsByAuthor(authorId: $authorId) {
+            _id
+            title
         }
     }
 `;

@@ -1,25 +1,37 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { useAuth } from '../../utils/context';
 import { GET_WORKOUT } from '../../graphql/queries/workout';
 
 import DeleteWorkoutButton from '../../components/Workout/DeleteWorkoutButton';
 import ExerciseDetails from '../../components/Exercise/ExerciseDetails';
 import WorkoutImage from '../../components/Workout/WorkoutImage';
+import UpdateWorkoutInfo from '../../components/Workout/UpdateWorkoutInfo';
+import RemoveExerciseButton from '../../components/Exercise/RemoveExerciseButton';
 
 function Workout() {
 
+    const currentUser = useAuth();
     const { workoutId } = useParams();
 
     const { loading, error, data } = useQuery(GET_WORKOUT, { variables: { workoutId } });
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Something went wrong! {error.message}</p>;
+    if (error) return <p>Something went wrong! { error.message }</p>;
 
     const workout = data.workout;
+    const isAuthor = currentUser && workout.author._id === currentUser._id;
+    const isAdmin = currentUser && (currentUser.role === "ADMIN");
 
     return (
+
         <div className="bg-gray-100 mx-4 my-4 p-6 rounded-lg shadow-md">
-            <DeleteWorkoutButton workoutId={ workout._id } />
+            { (isAdmin || isAuthor) && (
+                <>
+                    <UpdateWorkoutInfo workout={ workout } />
+                    <DeleteWorkoutButton workoutId={ workout._id } />
+                </>)
+            }
 
             <h2 className="text-2xl font-bold mb-4">
                 { workout.title }
@@ -47,16 +59,20 @@ function Workout() {
 
             <div className="grid grid-cols-1 gap-4">
                 { workout.exercises.map((exercise, index) => (
-                    <div key={index} className="border rounded-lg p-4 bg-white">
+                    <div key={ index } className="border rounded-lg p-4 bg-white">
                         <p className="font-semibold mb-2">
                             Exercise { index + 1 }:
                         </p>
 
                         <p className="mb-2">
-                            { exercise.sets } sets X { exercise.repetitions } repetitions
+                            { exercise.sets } sets x { exercise.repetitions } repetitions
                         </p>
 
                         <ExerciseDetails exercise={ exercise.exercise } />
+
+                        { (isAdmin || isAuthor) && (
+                            <RemoveExerciseButton workoutId={ workout._id } exerciseId={ exercise.exercise.id } />)
+                        }
                     </div>))
                 }
             </div>

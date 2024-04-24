@@ -3,7 +3,7 @@ import { GET_COMMENTS_BY_ARTICLE } from '../../graphql/queries/comment';
 
 import CommentCard from './CommentCard';
 
-function CommentList({ articleId, currentUser }) {
+function CommentList({ articleId }) {
 
     const { loading, error, data } = useQuery(GET_COMMENTS_BY_ARTICLE, { variables: { articleId } });
 
@@ -17,7 +17,7 @@ function CommentList({ articleId, currentUser }) {
         <>
             { !loading && !error && (comments.length > 0 ? (
                 <div>
-                    { comments.map((comment) => (<CommentCard key={ comment._id } comment={ comment } currentUser={ currentUser }/>)) }
+                    { comments.map((comment) => (<CommentCard key={ comment._id } comment={ comment } />)) }
                 </div>) : (<p>No comments added yet...</p>))
             }
         </>

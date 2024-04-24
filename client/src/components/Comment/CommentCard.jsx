@@ -1,8 +1,14 @@
+import { useAuth } from '../../utils/context';
+
 import DeleteCommentButton from './DeleteCommentButton';
 import UpdateCommentModal from './UpdateCommentModal';
 
-function CommentCard({ comment, currentUser }) {
+function CommentCard({ comment }) {
 
+    const currentUser = useAuth();
+    const isAuthor = currentUser && comment.author._id === currentUser._id;
+    const isAdmin = currentUser && (currentUser.role === "ADMIN");
+    
     return (
 
         <div className="bg-gray-100 p-3 mb-2 rounded">
@@ -22,11 +28,12 @@ function CommentCard({ comment, currentUser }) {
                 <p className="text-gray-500 text-sm">{ comment.createdAtFormatted }</p>
             </div>
 
-            { (currentUser && currentUser.role === "ADMIN") && (
-                <div className="flex justify-end mt-2">
-                    <UpdateCommentModal comment={comment} articleId={comment.articleId} />
-                    <DeleteCommentButton commentId={comment._id} />
-                </div>)
+            { (isAuthor || isAdmin) && (
+                <>
+                    <DeleteCommentButton commentId={ comment._id } />
+
+                    <UpdateCommentModal comment={ comment } articleId={ comment.articleId } />    
+                </>)
             }
         </div>
     );

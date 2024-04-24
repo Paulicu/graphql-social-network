@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user';
+import { useAuth } from '../../utils/context';
 
 import TopicList from '../../components/Topic/TopicList';
 import ArticleList from '../../components/Article/ArticleList';
@@ -9,6 +8,7 @@ import AddArticleModal from '../../components/Article/AddArticleModal';
 
 function Articles() {
 
+    const currentUser = useAuth();
     const [sortBy, setSortBy] = useState("NEWEST");
     const [selectedTopicId, setSelectedTopicId] = useState(null);
 
@@ -17,14 +17,11 @@ function Articles() {
         setSortBy(value);
     };
 
-    const { data } = useQuery(GET_AUTHENTICATED_USER);
-    const currentUser = data.authUser;
-
     return (
 
         <div className="flex">
             <div className="w-1/3 mr-4 ml-4 mt-4">
-               <TopicList onSelectTopic={ setSelectedTopicId } currentUser={ currentUser }/>
+               <TopicList onSelectTopic={ setSelectedTopicId } />
             </div>
 
             <div className="flex-grow mr-4 mt-4">

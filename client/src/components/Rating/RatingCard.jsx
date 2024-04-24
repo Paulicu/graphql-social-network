@@ -1,8 +1,14 @@
+import { useAuth } from '../../utils/context';
 import { FaRegStar } from 'react-icons/fa';
+
 import DeleteRatingButton from './DeleteRatingButton';
 import UpdateRatingModal from './UpdateRatingModal';
 
 function RatingCard({ rating }) {
+
+    const currentUser = useAuth();
+    const isAuthor = currentUser && rating.author._id === currentUser._id;
+    const isAdmin = currentUser && (currentUser.role === "ADMIN");
 
     const generateStars = () => {
 
@@ -14,7 +20,7 @@ function RatingCard({ rating }) {
 
         return stars;
     };
-
+    
     return (
         <div className="bg-gray-100 p-3 mb-2 rounded">
             <div className="flex items-center justify-between">
@@ -35,8 +41,13 @@ function RatingCard({ rating }) {
             <div className="flex items-center mt-2">{ rating.message }</div>
 
             <div className="flex justify-end mt-2">
-                <UpdateRatingModal rating={ rating } programId={ rating.programId } />
-                <DeleteRatingButton ratingId={ rating._id } />
+                { (isAuthor || isAdmin) && (
+                    <>
+                        <UpdateRatingModal rating={ rating } programId={ rating.programId } />
+
+                        <DeleteRatingButton ratingId={ rating._id } />
+                    </>)
+                }
             </div>
         </div>
     );

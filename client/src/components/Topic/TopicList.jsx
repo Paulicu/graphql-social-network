@@ -4,9 +4,11 @@ import { GET_TOPICS } from '../../graphql/queries/topic';
 
 import TopicRow from './TopicRow';
 import AddTopicModal from './AddTopicModal';
+import { useAuth } from '../../utils/context';
 
-function TopicList({ onSelectTopic, currentUser }) {
+function TopicList({ onSelectTopic }) {
 
+    const currentUser = useAuth();
     const [selectedTopic, setSelectedTopic] = useState(null);
     const { loading, error, data } = useQuery(GET_TOPICS);
 
@@ -25,7 +27,7 @@ function TopicList({ onSelectTopic, currentUser }) {
     };
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error displaying topics: { error.message }</p>;
+    if (error) return <p>Something went wrong! { error.message }</p>;
 
     return (
         
@@ -41,7 +43,7 @@ function TopicList({ onSelectTopic, currentUser }) {
             <div className="flow-root">
                 <ul className="divide-y divide-gray-200">
                     { !loading && !error && (data.topics.length > 0 ?
-                        data.topics.map((topic) => (<TopicRow key={ topic._id } topic={ topic } onSelectTopic={ handleTopicClick } selectedTopic={ selectedTopic } currentUser={ currentUser } />)) :
+                        data.topics.map((topic) => (<TopicRow key={ topic._id } topic={ topic } onSelectTopic={ handleTopicClick } selectedTopic={ selectedTopic } />)) :
                         <p>No topics posted yet..</p>)
                     }
                 </ul>
