@@ -1,4 +1,5 @@
 import Navbar from './Navbar';
+import SearchBar from './SearchBar';
 import Icon from './Icon';
 
 function Header() {
@@ -14,7 +15,7 @@ function Header() {
                 </div>
                 
                 <div className="flex items-center justify-center flex-grow">
-                  
+                    <SearchBar />
                 </div>
                 
                 <div className="flex items-center justify-between">

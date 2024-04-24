@@ -26,6 +26,7 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                         <label key={ equipment } className="block">
                             <input
                                 type="checkbox"
+                                id = { equipment }
                                 value={ equipment }
                                 checked={ selectedFilters.equipment.includes(equipment) }
                                 onChange={ (e) => handleCheckboxChange("equipment", e.target.value) }
@@ -47,6 +48,7 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                         <label key={ bodyPart } className="block">
                             <input
                                 type="checkbox"
+                                id = { bodyPart }
                                 value={ bodyPart }
                                 checked={ selectedFilters.bodyParts.includes(bodyPart) }
                                 onChange={ (e) => handleCheckboxChange("bodyParts", e.target.value) }
@@ -68,6 +70,7 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                         <label key={ target } className="block">
                             <input
                                 type="checkbox"
+                                id={ target }
                                 value={ target }
                                 checked={ selectedFilters.targets.includes(target) }
                                 onChange={ (e) => handleCheckboxChange("targets", e.target.value) }

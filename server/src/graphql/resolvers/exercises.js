@@ -41,7 +41,20 @@ const exerciseResolvers = {
             catch (err) {
                 
                 console.error(err);
-                throw new Error(err.message || "Failed to fetch exercise!");
+                throw new Error(err.message || `Failed to fetch exercise by ID: ${ exerciseId }!`);
+            }
+        },
+
+        exercisesByName: async (_, { name }, { dataSources }) => {
+
+            try {
+
+                return dataSources.exercisesAPI.getExercisesByName(name);
+            } 
+            catch (err) {
+                
+                console.error(err);
+                throw new Error(err.message || `Failed to fetch exercises by name: ${ name }!`);
             }
         },
 
@@ -62,12 +75,12 @@ const exerciseResolvers = {
 
             try {
 
-              return dataSources.exercisesAPI.getTargetList();
+                return dataSources.exercisesAPI.getTargetList();
             } 
             catch (err) {
 
-              console.error(err);
-              throw new Error(err.message || "Failed to fetch target list!");
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch target list!");
             }
         },
 

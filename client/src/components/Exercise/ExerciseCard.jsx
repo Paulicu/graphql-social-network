@@ -30,7 +30,7 @@ function ExerciseCard({ exercise, isSelected, onSelect }) {
                     See more
                 </Link>
 
-                <input type="checkbox" checked={ isSelected } onChange={ () => onSelect(exercise) } />
+                <input type="checkbox" checked={ isSelected } onChange={ () => onSelect(exercise) } id={ exercise.id } />
             </div>
         </div>
     );

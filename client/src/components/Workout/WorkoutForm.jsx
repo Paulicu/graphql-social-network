@@ -26,10 +26,10 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
 
         const { name, value, id } = e.target;
 
-        const isExerciseId = /^\d+$/.test(id);
-        if (isExerciseId) {
+        if (id.startsWith('sets-') || id.startsWith('repetitions-')) {
             
-            const exercises = workoutData.exercises.map(exercise => exercise.exerciseId === id ? { ...exercise, [name]: value } : exercise);
+            const exId = id.split('-')[1];
+            const exercises = workoutData.exercises.map(exercise => exercise.exerciseId === exId ? { ...exercise, [name]: value } : exercise);
             setWorkoutData({ ...workoutData, exercises: exercises });
         } 
         else {
@@ -119,30 +119,30 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
                     </h3>
 
                     <div className="flex mb-2">
-                        <label className="mr-2">
+                        <label htmlFor={ `sets-${ exercise.id }` } className="mr-2">
                             Sets:
                         </label>
 
                         <input
-                            id={ exercise.id }
+                            id={ `sets-${ exercise.id }` }
                             name="sets"
                             type="text"
-                            value={ workoutData.exercises.find(ex => ex.exerciseId === exercise.id)?.sets }
+                            value={ workoutData.exercises.find(ex => ex.exerciseId === exercise.id)?.sets || "" }
                             onChange={ handleChange }
                             className="border rounded-md px-2 py-1"
                         />
                     </div>
 
                     <div className="flex">
-                        <label className="mr-2">
+                        <label htmlFor={ `repetitions-${ exercise.id }` } className="mr-2">
                             Repetitions:
                         </label>
 
                         <input
-                            id={ exercise.id }
+                            id={ `repetitions-${ exercise.id }` }
                             name="repetitions"
                             type="text"
-                            value={ workoutData.exercises.find(ex => ex.exerciseId === exercise.id)?.repetitions }
+                            value={ workoutData.exercises.find(ex => ex.exerciseId === exercise.id)?.repetitions || "" }
                             onChange={ handleChange }
                             className="border rounded-md px-2 py-1"
                         />

@@ -9,7 +9,8 @@ const exercise = readFileSync('src/graphql/typeDefs/Exercise.graphql', { encodin
 const workout = readFileSync('src/graphql/typeDefs/Workout.graphql', { encoding: 'utf-8' });
 const program = readFileSync('src/graphql/typeDefs/Program.graphql', { encoding: 'utf-8' });
 const rating = readFileSync('src/graphql/typeDefs/Rating.graphql', { encoding: 'utf-8' });
+const search = readFileSync('src/graphql/typeDefs/Search.graphql', { encoding: 'utf-8' });
 
-const mergedTypeDefs = mergeTypeDefs([user, topic, article, comment, exercise, workout, program, rating]);
+const mergedTypeDefs = mergeTypeDefs([user, topic, article, comment, exercise, workout, program, rating, search]);
 
 export default mergedTypeDefs;

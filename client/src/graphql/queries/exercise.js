@@ -9,6 +9,8 @@ export const GET_EXERCISES = gql`
             equipment
             gifUrl
             target
+            secondaryMuscles
+            instructions
         }
     }
 `;

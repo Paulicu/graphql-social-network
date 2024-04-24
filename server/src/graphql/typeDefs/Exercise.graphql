@@ -14,6 +14,7 @@ type Query {
 
     exercises(equipment: [String], bodyParts: [String], targets: [String]): [Exercise!]!
     exerciseById(exerciseId: String!): Exercise
+    exercisesByName(name: String!): [Exercise]
     bodyPartList: [String!]!
     targetList: [String!]!
     equipmentList: [String!]!
