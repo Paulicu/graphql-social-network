@@ -10,10 +10,14 @@ const userResolvers = {
 
     Query: {
 
-        users: async (_, __) => {
+        users: async (_, __, context) => {
 
             try {
 
+                const { getUser } = context;
+                if (getUser().role !== "ADMIN") {
+                    throw new Error("Restricted Access!");
+                }
                 const users = await User.find();
                 return users;
             }
@@ -165,7 +169,36 @@ const userResolvers = {
 				console.error(err);
 				throw new Error(err.message || "Failed to log out!");
 			}
-		}
+		},
+
+        changeRole: async (_, { userId, role }, context) => {
+
+            try {
+
+                const currentUser = await context.getUser();
+                if (currentUser.role !== "ADMIN") {
+                    throw new Error("Unauthorized access!");
+                }
+        
+                const user = await User.findById(userId);
+                if (!user) {
+                    throw new Error("User not found.");
+                }
+        
+                if (!["ADMIN", "MEMBER"].includes(role)) {
+                    throw new Error("Invalid role specified.");
+                }
+        
+                user.role = role;
+                await user.save();
+                return user;
+            } 
+            catch (err) {
+                
+                console.error(err);
+                throw new Error(err.message || "Failed to change user role!");
+            }
+        }
     },
 
     User: {

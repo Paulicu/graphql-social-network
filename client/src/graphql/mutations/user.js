@@ -29,3 +29,12 @@ export const LOGOUT = gql`
         }
     }
 `;
+
+export const CHANGE_ROLE = gql`
+    mutation ChangeRole($userId: ID!, $role: Role!) {
+        changeRole(userId: $userId, role: $role) {
+            _id
+            role
+        }
+    }
+`;

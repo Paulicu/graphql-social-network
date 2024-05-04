@@ -43,6 +43,7 @@ type Mutation {
     register(input: RegisterInput!): User
     login(input: LoginInput!): User
     logout: LogoutResponse
+    changeRole(userId: ID!, role: Role!): User
 }
 
 input RegisterInput {

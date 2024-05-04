@@ -5,6 +5,7 @@ import { GET_AUTHENTICATED_USER } from './graphql/queries/user';
 import Home from './pages/Home/Home';
 import Login from './pages/Authentication/Login';
 import Register from './pages/Authentication/Register';
+import Dashboard from './pages/Admin/Dashboard';
 import Articles from './pages/Article/Articles';
 import Article from './pages/Article/Article';
 import Exercises from './pages/Exercise/Exercises';
@@ -19,6 +20,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 import { AuthContext } from './utils/context';
+
 
 function App() {
 
@@ -36,6 +38,7 @@ function App() {
                 <Route path="/" element={ <Home /> } />
                 <Route path="/login" element={ !data.authUser ? <Login /> : <Navigate to='/' /> } />
                 <Route path="/register" element={ !data.authUser ? <Register /> : <Navigate to='/' /> } />
+                <Route path="/dashboard" element={ (data.authUser && data.authUser.role === "ADMIN") ? <Dashboard /> : <Navigate to='/' /> } />
 
                 <Route path="/articles" element={ <Articles /> } />
                 <Route path="/article/:articleId" element={ <Article /> } />

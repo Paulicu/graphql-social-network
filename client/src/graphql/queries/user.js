@@ -10,3 +10,18 @@ export const GET_AUTHENTICATED_USER = gql`
         }
     }
 `;
+
+export const GET_USERS = gql`
+    query GetUsers {
+        users {
+            _id
+            fullName
+            profilePicture
+            role
+            gender
+            email
+            createdAtFormatted
+            username
+        }
+    }
+`;

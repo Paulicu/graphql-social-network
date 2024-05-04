@@ -1,8 +1,13 @@
+import { Link } from 'react-router-dom';
+
 import Navbar from './Navbar';
 import SearchBar from './SearchBar';
 import Icon from './Icon';
+import { useAuth } from '../../utils/context';
 
 function Header() {
+
+    const currentUser = useAuth();
 
     return (
 
@@ -19,13 +24,15 @@ function Header() {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                    
+                    { (currentUser) && (currentUser.role === "ADMIN") && (
+                        <div className="ml-5">
+                            <Link to="/dashboard" className="text-white text-xl font-bold ml-5">
+                                Dashboard
+                            </Link>
+                        </div>)
+                    }
 
-                    <div className="ml-5">
-                       
-                    </div>
-                    
-                    <div className="ml-5">
+                    <div className="ml-10">
                         <Icon />
                     </div>
                 </div>
