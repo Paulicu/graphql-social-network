@@ -17,6 +17,7 @@ type Program {
 type Day {
 
     dayNumber: Int!
+    workoutId: ID
     workout: Workout
     isRestDay: Boolean!
 }
@@ -30,7 +31,6 @@ input ProgramInput {
 
 input DayInput {
 
-    dayNumber: Int!
     workoutId: ID
 }
 
@@ -43,6 +43,6 @@ type Query {
 type Mutation {
 
     createProgram(input: ProgramInput!): Program!
-    updateProgram(programId: ID!, input: ProgramInput): Program
+    updateProgram(programId: ID!, input: ProgramInput!): Program!
     deleteProgram(programId: ID!): Program
 }

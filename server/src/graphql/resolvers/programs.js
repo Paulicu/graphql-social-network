@@ -60,26 +60,18 @@ const programResolvers = {
                     throw new Error("Invalid number of days. Must be between 1 and 7.");
                 }
 
-                for (const day of days) {
-                    
-                    if (day.dayNumber < 1 || day.dayNumber > 7) {
-
-                        throw new Error("Invalid day number. Must be between 1 and 7.");
-                    }
-
-                    if (day.workoutId) {
-
-                        const workout = await Workout.findById(day.workoutId);
+                for (let i = 0; i < days.length; i++) {
+                    if (days[i].workoutId) {
+                        const workout = await Workout.findById(days[i].workoutId);
                         if (!workout) {
-                            throw new Error(`Could not find Workout with ID: ${ day.workoutId }!`);
+                            throw new Error(`Workout with ID ${ days[i].workoutId } does not exist.`);
                         }
                     }
-                    else {
-                        
-                        day.isRestDay = true;
-                    }
+                    days[i].dayNumber = i + 1;
+                    days[i].isRestDay = !days[i].workoutId;
+                    days[i].workoutId = days[i].workoutId || null;
                 }
-
+            
                 const program = new Program(
                 {
                     authorId: currentUser._id,
@@ -99,6 +91,46 @@ const programResolvers = {
                 console.error(err);
                 throw new Error(err.message || "Failed to create Program!");
             }
+        },
+
+        updateProgram: async (_, { programId, input }, context) => {
+
+            const { getUser } = context;
+            const { title, goal, days } = input;
+
+            const currentUser = getUser();
+
+            if (!currentUser) {
+                throw new Error("You must be logged in to update a program.");
+            }
+        
+            const program = await Program.findById(programId);
+            if (!program) {
+                throw new Error("Program not found.");
+            }
+        
+            if (program.authorId.toString() !== currentUser._id.toString()) {
+                throw new Error("You are not authorized to update this program.");
+            }
+
+            for (let i = 0; i < days.length; i++) {
+                if (days[i].workoutId) {
+                    const workout = await Workout.findById(days[i].workoutId);
+                    if (!workout) {
+                        throw new Error(`Workout with ID ${days[i].workoutId} does not exist.`);
+                    }
+                }
+                days[i].dayNumber = i + 1;
+                days[i].isRestDay = !days[i].workoutId;
+                days[i].workoutId = days[i].workoutId || null;
+            }
+    
+            program.title = title;
+            program.goal = goal;
+            program.days = days;
+
+            await program.save();
+            return program;
         },
 
         deleteProgram: async (_, { programId }, context) => {
@@ -124,8 +156,6 @@ const programResolvers = {
 
                 throw new Error("You don't have permission to delete this Program!");
             }
-
-            
 
             const deletedProgram = await Program.findByIdAndDelete(programId);
             if (!deletedProgram) {

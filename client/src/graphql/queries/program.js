@@ -39,7 +39,9 @@ export const GET_PROGRAM = gql`
             days {
                 dayNumber
                 isRestDay
+                workoutId
                 workout {
+                    _id
                     title
                     difficulty
                     exercises {

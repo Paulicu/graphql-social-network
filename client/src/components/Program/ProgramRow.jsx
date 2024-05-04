@@ -19,8 +19,8 @@ function ProgramRow({ program }) {
                 </div>
             </div>
 
-            <div className="inline-flex items-center text-base text-gray-900 mt-2">
-                <p>Total Ratings: { program.totalRatings } ratings</p>
+            <div className="flex items-center justify-between text-base text-gray-900 mt-2">
+                <p>{ program.totalRatings } ratings</p>
                 
                 <p>Average Rating: { program.averageRating }</p>
 

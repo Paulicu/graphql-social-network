@@ -4,19 +4,16 @@ import date from 'date-and-time';
 const daySchema = new mongoose.Schema(
 {
     dayNumber: {
-        type: Number,  
-        min: 1,
-        max: 7,
-        required: true
+        type: Number 
     },
     isRestDay: {
         type: Boolean,
-        required: true,
-        default: false
+        default: true
     },
     workoutId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Workout"
+        ref: "Workout",
+        default: null
     }
 });
 
@@ -61,6 +58,14 @@ programSchema.virtual("totalWorkouts").get(function () {
 programSchema.virtual("totalRatings").get(function () {
     
     return this.ratings.length;
+});
+
+programSchema.pre("save", function(next) {
+    this.days.forEach((day, index) => {
+        day.dayNumber = index + 1; 
+        day.isRestDay = !day.workoutId;
+    });
+    next();
 });
 
 const Program = mongoose.model("Program", programSchema);

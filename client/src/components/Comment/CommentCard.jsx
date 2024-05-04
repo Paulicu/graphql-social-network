@@ -29,11 +29,11 @@ function CommentCard({ comment }) {
             </div>
 
             { (isAuthor || isAdmin) && (
-                <>
-                    <DeleteCommentButton commentId={ comment._id } />
+                <div className="flex justify-end mt-2"> 
+                    <UpdateCommentModal comment={ comment } articleId={ comment.articleId } /> 
 
-                    <UpdateCommentModal comment={ comment } articleId={ comment.articleId } />    
-                </>)
+                    <DeleteCommentButton commentId={ comment._id } />
+                </div>)
             }
         </div>
     );

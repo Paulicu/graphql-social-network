@@ -24,7 +24,7 @@ function Articles() {
                <TopicList onSelectTopic={ setSelectedTopicId } />
             </div>
 
-            <div className="flex-grow mr-4 mt-4">
+            <div className="w-2/3 mr-4 mt-4">
                 <SortDropdown value={ sortBy } onChange={ handleSortChange } />
 
                 { currentUser && <AddArticleModal /> }

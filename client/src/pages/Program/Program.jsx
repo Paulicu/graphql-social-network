@@ -6,6 +6,7 @@ import AddRatingForm from '../../components/Rating/AddRatingForm';
 import RatingList from '../../components/Rating/RatingList';
 import DeleteProgramButton from '../../components/Program/DeleteProgramButton';
 import { useAuth } from '../../utils/context';
+import UpdateProgramForm from '../../components/Program/UpdateProgramForm';
 
 function Program() {
     
@@ -22,45 +23,49 @@ function Program() {
 
     return (
 
-        // To do: Initial data check, update later
-        <div>
-            { (isAdmin || isAuthor) && (<DeleteProgramButton programId={ program._id } />) }
-
-            <h1>{program.title}</h1>
-            <p>Goal: {program.goal}</p>
-            <p>Created At: {program.createdAtFormatted}</p>
-            <p>Last Updated: {program.updatedAtFormatted}</p>
-            <p>Total Workouts: {program.totalWorkouts}</p>
-            <p>Total Ratings: {program.totalRatings}</p>
-            <p>Average Rating: {program.averageRating}</p>
-            <p>Author: {program.author.fullName}</p>
-
-            <h2>Program Details</h2>
-            <ul>
-                {program.days.map((day) => (
-                    <li key={day.dayNumber}>
-                        Day {day.dayNumber}: {day.isRestDay ? 'Rest Day' : 'Workout Day'}
-                        {day.workout && (
-                            <div>
-                                <h3>{day.workout.title}</h3>
-                                <p>Difficulty: {day.workout.difficulty}</p>
-                                <ul>
-                                    {day.workout.exercises.map((exercise, index) => (
-                                        <li key={index}>
-                                            {exercise.exercise.name} - Sets: {exercise.sets}, Repetitions:{' '}
-                                            {exercise.repetitions}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
-
-            <AddRatingForm programId={ program._id } />
-            <RatingList programId={ program._id }/>
+        <div className="bg-white p-5 rounded-lg shadow-md">
+        { (isAdmin || isAuthor) && <DeleteProgramButton programId={ program._id } /> }
+        <div className="text-lg font-semibold text-gray-700 mb-2">
+            {program.title}
         </div>
+        <div className="grid grid-cols-2 gap-4">
+            <div>
+                <p><strong>Goal:</strong> {program.goal}</p>
+                <p><strong>Created At:</strong> {program.createdAtFormatted}</p>
+                <p><strong>Last Updated:</strong> {program.updatedAtFormatted}</p>
+                <p><strong>Total Workouts:</strong> {program.totalWorkouts}</p>
+                <p><strong>Total Ratings:</strong> {program.totalRatings}</p>
+                <p><strong>Average Rating:</strong> {program.averageRating.toFixed(1)}</p>
+                <p><strong>Author:</strong> {program.author.fullName}</p>
+            </div>
+            <div>
+                <h2 className="text-lg font-bold text-gray-700">Program Details</h2>
+                <ul className="list-disc pl-5">
+                    {program.days.map((day) => (
+                        <li key={day.dayNumber}>
+                            <strong>Day {day.dayNumber}:</strong> {day.isRestDay ? 'Rest Day' : 'Workout Day'}
+                            {day.workout && (
+                                <div className="ml-4">
+                                    <h3 className="font-semibold">{day.workout.title}</h3>
+                                    <p>Difficulty: {day.workout.difficulty}</p>
+                                    <ul className="list-disc pl-5">
+                                        {day.workout.exercises.map((exercise, index) => (
+                                            <li key={index}>
+                                                {exercise.exercise.name} - Sets: {exercise.sets}, Repetitions: {exercise.repetitions}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+        <UpdateProgramForm program={program} />
+        <AddRatingForm programId={ program._id } />
+        <RatingList programId={ program._id }/>
+    </div>
     );
 }
 

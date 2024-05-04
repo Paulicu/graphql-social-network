@@ -9,6 +9,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { typePolicies } from './utils/policies.js';
 
 const httpLink = new HttpLink(
 {
@@ -38,7 +39,7 @@ const client = new ApolloClient(
     link: splitLink,
     uri: "/graphql",
     // uri: 'http://localhost:5000/graphql',
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ typePolicies }),
     credentials: "include" 
 });
 
