@@ -28,3 +28,8 @@ type Mutation {
     updateRating(ratingId: ID!, input: RatingInput!): Rating
     deleteRating(ratingId: ID!): Rating
 }
+
+type Subscription {
+
+    newRatingSubscription(programId: ID!): Rating
+}

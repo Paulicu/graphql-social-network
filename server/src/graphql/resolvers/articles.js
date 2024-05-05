@@ -195,7 +195,6 @@ const articleResolvers = {
 
         newArticleSubscription: {
 
-            // TODO: maybe add a filter for this:
             subscribe: () => pubsub.asyncIterator(['NEW_ARTICLE'])
         }
     },

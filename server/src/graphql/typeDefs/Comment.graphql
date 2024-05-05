@@ -24,6 +24,11 @@ type Mutation {
     deleteComment(commentId: ID!): Comment
 }
 
+type Subscription {
+
+    newCommentSubscription(articleId: ID!): Comment
+}
+
 input CommentInput {
 
     content: String!

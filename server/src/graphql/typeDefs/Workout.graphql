@@ -69,3 +69,8 @@ type Mutation {
     addExerciseToWorkout(workoutId: ID!, input: ExerciseInput!): Workout
     removeExerciseFromWorkout(workoutId: ID!, exerciseId: String!): Workout
 }
+
+type Subscription {
+
+    newWorkoutSubscription: Workout
+}

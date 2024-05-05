@@ -1,19 +1,12 @@
 import { gql } from '@apollo/client';
 
-export const NEW_ARTICLE_SUBSCRIPTION = gql`
-    subscription OnArticleAdded {
-        newArticleSubscription {
+export const NEW_COMMENT_SUBSCRIPTION = gql`
+    subscription OnCommentAdded($articleId: ID!) {
+        newCommentSubscription(articleId: $articleId) {
             _id
-            title
             content
             createdAtFormatted
             updatedAtFormatted
-            totalComments
-            totalViews
-            topic {
-                _id
-                title
-            }
             author {
                 _id
                 fullName

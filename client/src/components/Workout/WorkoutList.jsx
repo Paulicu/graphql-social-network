@@ -1,10 +1,27 @@
+import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_WORKOUTS } from '../../graphql/queries/workout';
+import { NEW_WORKOUT_SUBSCRIPTION } from '../../graphql/subscriptions/workout';
 import WorkoutCard from './WorkoutCard';
 
 function WorkoutList() {
 
-    const { loading, error, data } = useQuery(GET_WORKOUTS);
+    const { loading, error, data, subscribeToMore } = useQuery(GET_WORKOUTS);
+
+    useEffect(() => {
+        const unsubscribe = subscribeToMore({
+            document: NEW_WORKOUT_SUBSCRIPTION,
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+                const newWorkout = subscriptionData.data.newWorkoutSubscription;
+                return { workouts: [newWorkout, ...prev.workouts] };
+            },
+        });
+    
+        return () => unsubscribe();
+    }, [subscribeToMore]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! { error.message }</p>;

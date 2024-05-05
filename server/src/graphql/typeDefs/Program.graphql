@@ -46,3 +46,8 @@ type Mutation {
     updateProgram(programId: ID!, input: ProgramInput!): Program!
     deleteProgram(programId: ID!): Program
 }
+
+type Subscription {
+
+    newProgramSubscription: Program
+}

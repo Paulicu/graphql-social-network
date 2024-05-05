@@ -2,6 +2,10 @@ import Rating from '../../models/Rating.js';
 import Program from '../../models/Program.js';
 import User from '../../models/User.js';
 
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+
 const ratingResolvers = {
 
     Query: {
@@ -45,7 +49,7 @@ const ratingResolvers = {
                 });
 
                 await rating.save();
-
+                pubsub.publish(`NEW_RATING_${ programId }`, { newRatingSubscription: rating });
                 await Program.findByIdAndUpdate(programId, { $push: { ratings: rating._id } }, { new: true });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { ratings: rating._id } }, { new: true });
 
@@ -135,6 +139,14 @@ const ratingResolvers = {
 
                 console.error(err);
                 throw new Error(err.message || "Failed to delete rating!");
+            }
+        }
+    },
+
+    Subscription: {
+        newRatingSubscription: {
+            subscribe: (_, { programId }) => {
+                return pubsub.asyncIterator([`NEW_RATING_${ programId }`]);
             }
         }
     },

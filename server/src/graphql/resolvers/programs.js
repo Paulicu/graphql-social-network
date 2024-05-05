@@ -3,6 +3,10 @@ import User from '../../models/User.js';
 import Workout from '../../models/Workout.js';
 import Rating from '../../models/Rating.js';
 
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+
 const programResolvers = {
 
     Query: {
@@ -81,7 +85,7 @@ const programResolvers = {
                 });
 
                 await program.save();
-
+                pubsub.publish('NEW_PROGRAM', { newProgramSubscription: program });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { programs: program._id } }, { new: true });
                 
                 return program;
@@ -173,6 +177,14 @@ const programResolvers = {
             await User.findByIdAndUpdate(program.authorId, { $pull: { programs: programId } }, { new: true });
             
             return deletedProgram;
+        }
+    },
+
+    Subscription: {
+
+        newProgramSubscription: {
+
+            subscribe: () => pubsub.asyncIterator(['NEW_PROGRAM'])
         }
     },
 

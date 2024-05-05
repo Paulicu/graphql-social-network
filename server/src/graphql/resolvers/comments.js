@@ -2,6 +2,10 @@ import Article from '../../models/Article.js';
 import Comment from '../../models/Comment.js';
 import User from '../../models/User.js';
 
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+
 const commentResolvers = {
 
     Query: {
@@ -44,7 +48,7 @@ const commentResolvers = {
                 });
 
                 await newComment.save();
-
+                pubsub.publish(`NEW_COMMENT_${ articleId }`, { newCommentSubscription: newComment });
                 await Article.findByIdAndUpdate(articleId, { $push: { comments: newComment._id } }, { new: true });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { comments: newComment._id } }, { new: true });
 
@@ -130,6 +134,14 @@ const commentResolvers = {
                 throw new Error(err.message || "Failed to delete comment!");
             }
             
+        }
+    },
+
+    Subscription: {
+        newCommentSubscription: {
+            subscribe: (_, { articleId }) => {
+                return pubsub.asyncIterator([`NEW_COMMENT_${ articleId }`]);
+            }
         }
     },
 

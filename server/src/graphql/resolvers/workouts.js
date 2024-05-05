@@ -3,6 +3,10 @@ import User from '../../models/User.js';
 
 import muscleMap from '../../utils/muscleMap.js';
 
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+
 const workoutResolvers = {
 
     Query: {
@@ -99,7 +103,7 @@ const workoutResolvers = {
                 });
 
                 await workout.save();
-
+                pubsub.publish('NEW_WORKOUT', { newWorkoutSubscription: workout });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { workouts: workout._id } }, { new: true });
 
                 return workout;
@@ -295,6 +299,14 @@ const workoutResolvers = {
                 console.error(err);
                 throw new Error(err.message || "Failed to delete workout!");
             }
+        }
+    },
+
+    Subscription: {
+
+        newWorkoutSubscription: {
+
+            subscribe: () => pubsub.asyncIterator(['NEW_WORKOUT'])
         }
     },
 

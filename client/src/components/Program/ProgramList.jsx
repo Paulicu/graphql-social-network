@@ -1,11 +1,27 @@
+import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_PROGRAMS } from '../../graphql/queries/program';
-
+import { NEW_PROGRAM_SUBSCRIPTION } from '../../graphql/subscriptions/program';
 import ProgramRow from './ProgramRow';
 
 function ProgramList() {
 
-    const { loading, error, data } = useQuery(GET_PROGRAMS);
+    const { loading, error, data, subscribeToMore } = useQuery(GET_PROGRAMS);
+
+    useEffect(() => {
+        const unsubscribe = subscribeToMore({
+            document: NEW_PROGRAM_SUBSCRIPTION,
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+                const newProgram = subscriptionData.data.newProgramSubscription;
+                return { programs: [newProgram, ...prev.programs] };
+            },
+        });
+    
+        return () => unsubscribe();
+    }, [subscribeToMore]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! { error.message }</p>;

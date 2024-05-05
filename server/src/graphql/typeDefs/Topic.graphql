@@ -33,6 +33,11 @@ type Mutation {
     deleteTopic(topicId: ID!): Topic
 }
 
+type Subscription {
+
+    newTopicSubscription: Topic
+}
+
 input TopicInput {
 
     title: String!

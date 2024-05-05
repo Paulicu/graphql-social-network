@@ -1,19 +1,16 @@
 import { gql } from '@apollo/client';
 
-export const NEW_ARTICLE_SUBSCRIPTION = gql`
-    subscription OnArticleAdded {
-        newArticleSubscription {
+export const NEW_PROGRAM_SUBSCRIPTION = gql`
+    subscription OnProgramAdded {
+        newProgramSubscription {
             _id
             title
-            content
+            goal
             createdAtFormatted
             updatedAtFormatted
-            totalComments
-            totalViews
-            topic {
-                _id
-                title
-            }
+            totalWorkouts
+            totalRatings
+            averageRating
             author {
                 _id
                 fullName

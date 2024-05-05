@@ -2,6 +2,10 @@ import Topic from '../../models/Topic.js';
 import User from '../../models/User.js';
 import Article from '../../models/Article.js';
 
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+
 const topicResolvers = {
 
     Query: {
@@ -62,6 +66,7 @@ const topicResolvers = {
                 });
 
                 await newTopic.save();
+                pubsub.publish('NEW_TOPIC', { newTopicSubscription: newTopic });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { topics: newTopic._id } }, { new: true });
                 return newTopic;
             } 
@@ -127,6 +132,14 @@ const topicResolvers = {
                 console.error(err);
                 throw new Error(err.message || "Failed to delete topic!");
             }
+        }
+    },
+
+    Subscription: {
+
+        newTopicSubscription: {
+
+            subscribe: () => pubsub.asyncIterator(['NEW_TOPIC'])
         }
     },
 
