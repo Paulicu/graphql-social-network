@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_EXERCISES } from '../../graphql/queries/exercise';
 
@@ -8,16 +8,37 @@ import ExerciseFilters from './ExerciseFilters';
 function ExerciseList({ selectedExercises, onSelectExercise }) {
 
     const [selectedFilters, setSelectedFilters] = useState({ equipment: [], bodyParts: [], targets: [] });
-
-    const { loading, error, data } = useQuery(GET_EXERCISES, 
+    const [offset, setOffset] = useState(0);
+    const { loading, error, data, fetchMore, refetch } = useQuery(GET_EXERCISES, 
     {
         variables: {
-
-            ...(selectedFilters.equipment.length > 0 && { equipment: selectedFilters.equipment }),
-            ...(selectedFilters.bodyParts.length > 0 && { bodyParts: selectedFilters.bodyParts }),
-            ...(selectedFilters.targets.length > 0 && { targets: selectedFilters.targets }),
+            pagination: {
+                offset: offset
+            },
+            filters: selectedFilters
         }
     });
+
+    useEffect(() => {
+        refetch({ filters: selectedFilters });
+    }, [selectedFilters, refetch]);
+
+
+
+    const handleLoadMore = () => {
+        fetchMore({
+            variables: {
+                pagination: { offset: data.exercises.length }
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return {
+                    ...prev,
+                    exercises: [...prev.exercises, ...fetchMoreResult.exercises]
+                };
+            }
+        });
+    };
 
     const handleFiltersChange = (filterType, value) => {
 
@@ -26,13 +47,14 @@ function ExerciseList({ selectedExercises, onSelectExercise }) {
             ...prevFilters,
             [filterType]: prevFilters[filterType].includes(value) ? prevFilters[filterType].filter((filter) => filter !== value) : [...prevFilters[filterType], value],
         }));
+        setOffset(0); 
     };
-
+    
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! { error.message }</p>;
 
-    const exercises = data?.exercises;
-
+    const exercises = data.exercises;
+    
     return (
 
         <div>
@@ -48,6 +70,9 @@ function ExerciseList({ selectedExercises, onSelectExercise }) {
                     />))
                 }
             </div>
+            <button onClick={handleLoadMore}>
+                Load More
+            </button>
         </div>
     );
 }

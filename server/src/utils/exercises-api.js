@@ -24,13 +24,13 @@ class ExercisesAPI extends RESTDataSource {
 
     async getExercises() {
 
-        const data = await this.get(`/exercises?limit=9999`);
-        data.forEach(exercise => {
+        const exercises = await this.get('/exercises?limit=-1');
+        exercises.forEach(exercise => {
 
             const cacheKey = `exercise:${ exercise.id }`;
             this.cache.set(cacheKey, JSON.stringify(exercise), this.cacheOptionsFor());
         });
-        return data;
+        return exercises;
     }
 
     async getExerciseById(id) {

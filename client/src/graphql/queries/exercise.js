@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_EXERCISES = gql`
-    query GetExercises($equipment: [String], $bodyParts: [String], $targets: [String]) {
-        exercises(equipment: $equipment, bodyParts: $bodyParts, targets: $targets) {
+    query GetExercises($pagination: PaginationInput, $filters: FiltersInput) {
+        exercises(pagination: $pagination, filters: $filters) {
             id
             name
             bodyPart

@@ -63,6 +63,11 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
         }
     };
 
+    const removeExercise = (id) => {
+        const updatedExercises = selectedExercises.filter(exercise => exercise.id !== id);
+        setSelectedExercises(updatedExercises);
+    };
+
     return (
 
         <div className="mt-6 p-4 bg-white shadow-md rounded-md">
@@ -147,6 +152,10 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
                             className="border rounded-md px-2 py-1"
                         />
                     </div>
+
+                    <button onClick={() => removeExercise(exercise.id)}>
+                        Remove
+                    </button>
                 </div>))
             }
 

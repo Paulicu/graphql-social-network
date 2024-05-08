@@ -2,27 +2,25 @@ const exerciseResolvers = {
 
     Query: {
 
-        exercises: async (_, { equipment, bodyParts, targets }, { dataSources }) => {
+        exercises: async (_, { pagination, filters }, { dataSources }) => {
 
             try {
                 
                 let exercises = await dataSources.exercisesAPI.getExercises();
-                
-                if (equipment) {
-
-                    exercises = exercises.filter(exercise => equipment.includes(exercise.equipment));
+                const { limit = 9, offset = 0 } = pagination;
+                const { equipment = [], bodyParts = [], targets = [] } = filters;
+                if (filters) {
+                    if (equipment.length > 0) {
+                        exercises = exercises.filter(exercise => filters.equipment.includes(exercise.equipment));
+                    }
+                    if (bodyParts.length > 0) {
+                        exercises = exercises.filter(exercise => filters.bodyParts.includes(exercise.bodyPart));
+                    }
+                    if (targets.length > 0) {
+                        exercises = exercises.filter(exercise => filters.targets.includes(exercise.target));
+                    }
                 }
-
-                if (bodyParts) {
-
-                    exercises = exercises.filter(exercise => bodyParts.includes(exercise.bodyPart));
-                }
-
-                if (targets) {
-
-                    exercises = exercises.filter(exercise => targets.includes(exercise.target));
-                }
-                 
+                exercises = exercises.slice(offset, offset + limit);
                 return exercises;
             } 
             catch (err) {
