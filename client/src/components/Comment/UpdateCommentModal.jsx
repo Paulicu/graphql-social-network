@@ -9,7 +9,7 @@ function UpdateCommentModal({ comment, articleId }) {
     const [showModal, setShowModal] = useState(false);
     const [content, setContent] = useState(comment.content);
 
-    const [updateComment] = useMutation(UPDATE_COMMENT, 
+    const [updateComment, { loading, error }] = useMutation(UPDATE_COMMENT, 
     { 
         variables: { commentId: comment._id, input: { content } },
         refetchQueries: [{ query: GET_COMMENTS_BY_ARTICLE, variables: { articleId: articleId } }] 
@@ -65,17 +65,16 @@ function UpdateCommentModal({ comment, articleId }) {
                                     name="content" 
                                     value={ content } 
                                     onChange={ handleChange } 
-                                    required 
                                 />
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={ toggleModal }>
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Save
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Saving..." : "Save" }
                                 </button>
                             </div>
                         </form>

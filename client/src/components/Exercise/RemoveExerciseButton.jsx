@@ -19,12 +19,12 @@ function RemoveExerciseButton({ workoutId, exerciseId }) {
         } 
         catch (err) {
 
-            console.error("Execution error in handleRemove:", err);
+            console.error("Error removing exercise from workout: ", err);
         }
     };
 
     if (loading) return <p>Removing...</p>;
-    if (error) return <p>Error removing exercise: {error.message}</p>;
+    if (error) return <p>Something went wrong! { error.message }</p>;
 
     return (
         

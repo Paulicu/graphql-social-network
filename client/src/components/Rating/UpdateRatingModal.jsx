@@ -9,7 +9,7 @@ function UpdateRatingModal({ rating, programId }) {
     const [showModal, setShowModal] = useState(false);
     const [ratingData, setRatingData] = useState({ stars: rating.stars, message: rating.message });
 
-    const [updateRating] = useMutation(UPDATE_RATING, 
+    const [updateRating, { loading, error }] = useMutation(UPDATE_RATING, 
     { 
         variables: { ratingId: rating._id, input: ratingData },
         refetchQueries: [{ query: GET_RATINGS_BY_PROGRAM, variables: { programId } }] 
@@ -91,14 +91,14 @@ function UpdateRatingModal({ rating, programId }) {
                                     required
                                 />
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" onClick={ toggleModal } className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4">
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Save
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Saving..." : "Save" }
                                 </button>
                             </div>
                         </form>

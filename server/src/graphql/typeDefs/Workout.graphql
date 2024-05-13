@@ -1,5 +1,4 @@
 type Workout {
-
     _id: ID!
     authorId: ID!
     author: User!
@@ -8,7 +7,7 @@ type Workout {
     description: String
     equipment: [String!]!
     muscleGroups: [String!]!
-    exercises: [WorkoutExercise]
+    exercises: [WorkoutExercise!]!
     createdAt: String!
     createdAtFormatted: String!
     updatedAt: String!
@@ -19,14 +18,12 @@ type Workout {
 }
 
 type WorkoutExercise {
-
     exercise: Exercise!
-    sets: Int
-    repetitions: Int
+    sets: Int!
+    repetitions: Int!
 }
 
 input WorkoutInput {
-
     title: String!
     difficulty: String!
     description: String
@@ -34,35 +31,30 @@ input WorkoutInput {
 }
 
 input WorkoutInfoInput {
-
     title: String!
     difficulty: String!
     description: String
 }
 
 input ExerciseInput {
-
     exerciseId: String!
     sets: Int
     repetitions: Int
 }
 
 enum Difficulty {
-    
     BEGINNER
     INTERMEDIATE
     ADVANCED
 }
 
 type Query {
-
     workouts: [Workout]
     workoutsByAuthor(authorId: ID!): [Workout]
     workout(workoutId: ID!): Workout
 }
 
 type Mutation {
-
     createWorkout(input: WorkoutInput!): Workout!
     updateWorkoutInfo(workoutId: ID!, input: WorkoutInfoInput!): Workout
     deleteWorkout(workoutId: ID!): Workout
@@ -71,6 +63,5 @@ type Mutation {
 }
 
 type Subscription {
-
     newWorkoutSubscription: Workout
 }

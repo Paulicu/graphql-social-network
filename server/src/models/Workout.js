@@ -1,24 +1,22 @@
-import mongoose from 'mongoose';
-import date from 'date-and-time';
+import mongoose from "mongoose";
+import date from "date-and-time";
 
-const exerciseSchema = new mongoose.Schema(
-{
+const exerciseSchema = new mongoose.Schema({
     exerciseId: {
         type: String,
         required: true
     },
     sets: {
         type: Number,
-        default: 0 
+        required: true
     },
     repetitions: {
         type: Number,
-        default: 0
+        required: true
     }
 });
 
-const workoutSchema = new mongoose.Schema(
-{
+const workoutSchema = new mongoose.Schema({
     authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -43,32 +41,29 @@ const workoutSchema = new mongoose.Schema(
         type: [String],
         required: true
     },
-    exercises: [exerciseSchema]
-    
+    exercises: {
+        type: [exerciseSchema],
+        required: true
+    }
 }, { timestamps: true });
 
 workoutSchema.virtual("createdAtFormatted").get(function () {
-    
     return date.format(this.createdAt, "dddd MMM DD, YYYY");
 });
 
 workoutSchema.virtual("updatedAtFormatted").get(function () {
-    
     return date.format(this.updatedAt, "dddd MMM DD, YYYY");
 });
 
-workoutSchema.virtual('totalExercises').get(function() {
-    
+workoutSchema.virtual("totalExercises").get(function() {
     return this.exercises.length;
 });
 
-workoutSchema.virtual('totalMuscleGroups').get(function () {
-
+workoutSchema.virtual("totalMuscleGroups").get(function () {
     return this.muscleGroups.length;
 });
 
-workoutSchema.virtual('totalEquipment').get(function () {
-
+workoutSchema.virtual("totalEquipment").get(function () {
     return this.equipment.length;
 });
 

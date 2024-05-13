@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
-import date from 'date-and-time';
+import mongoose from "mongoose";
+import date from "date-and-time";
 
-const daySchema = new mongoose.Schema(
-{
+const daySchema = new mongoose.Schema({
     dayNumber: {
-        type: Number 
+        type: Number, 
+        required: true
     },
     isRestDay: {
         type: Boolean,
@@ -17,8 +17,7 @@ const daySchema = new mongoose.Schema(
     }
 });
 
-const programSchema = new mongoose.Schema(
-{
+const programSchema = new mongoose.Schema({
     authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -30,33 +29,32 @@ const programSchema = new mongoose.Schema(
     },
     goal: {
         type: String,
+        required: true,
         enum: ["Muscle Gain", "Weight Loss", "Strength Gain"]
     },
-    days: [daySchema],
+    days: {
+        type: [daySchema],
+        required: true
+    },
     ratings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Rating"
     }]
-    
 }, { timestamps: true });
 
 programSchema.virtual("createdAtFormatted").get(function () {
-    
     return date.format(this.createdAt, "dddd MMM DD, YYYY");
 });
 
 programSchema.virtual("updatedAtFormatted").get(function () {
-    
     return date.format(this.updatedAt, "dddd MMM DD, YYYY");
 });
 
 programSchema.virtual("totalWorkouts").get(function () {
-    
     return this.days.length;
 });
 
 programSchema.virtual("totalRatings").get(function () {
-    
     return this.ratings.length;
 });
 

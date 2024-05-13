@@ -1,134 +1,123 @@
-import Topic from '../../models/Topic.js';
-import User from '../../models/User.js';
-import Article from '../../models/Article.js';
+import Topic from "../../models/Topic.js";
+import User from "../../models/User.js";
+import Article from "../../models/Article.js";
 
-import { PubSub } from 'graphql-subscriptions';
+import { PubSub } from "graphql-subscriptions";
 
 const pubsub = new PubSub();
 
 const topicResolvers = {
-
     Query: {
-
-        topics: async (_, __) => {
-
+        topics: async () => {
             try {
-
-              const topics = await Topic.find();
-              return topics;
+                const topics = await Topic.find().sort({ createdAt: -1 });
+                return topics;
             } 
             catch (err) {
-
-              console.error(err);
-              throw new Error(err.message || "Failed to fetch topics!");
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch topics!");
             }
         },
 
-        topic: async (_, { topicId }) => {
-
+        topic: async (parent, { topicId }) => {
             try {
-
-              const topic = await Topic.findById(topicId);
-              return topic;
+                const topic = await Topic.findById(topicId);
+                return topic;
             } 
             catch (err) {
-
-              console.error(err);
-              throw new Error(err.message || "Failed to fetch topic!");
+                console.error(err);
+                throw new Error(err.message || "Failed to fetch topic!");
             }
         }
     },
 
     Mutation: {
-
-        createTopic: async (_, { input }, context) => {
-          
+        createTopic: async (parent, { input }, context) => {
             try {
-
                 const currentUser = context.getUser();
                 if (!currentUser) {
-
-                    throw new Error("You must be logged in to create a topic.");
+                    throw new Error("You must be logged in to create a topic!");
                 }
                 
                 if (currentUser.role !== "ADMIN") {
-
-                    throw new Error("You don't have permission to create a topic.");
+                    throw new Error("You don't have permission to create a topic!");
                 }
 
                 const { title, description } = input;
+                if (!title || !description) {
+                    throw new Error("All fields are required!");
+                }
 
-                const newTopic = new Topic(
-                {
+                const topic = new Topic({
                     title,
                     description,
-                    adminId: context.getUser()._id
+                    adminId: currentUser._id
                 });
 
-                await newTopic.save();
-                pubsub.publish('NEW_TOPIC', { newTopicSubscription: newTopic });
-                await User.findByIdAndUpdate(currentUser._id, { $push: { topics: newTopic._id } }, { new: true });
-                return newTopic;
+                await topic.save();
+                pubsub.publish("NEW_TOPIC", { newTopicSubscription: topic });
+                await User.findByIdAndUpdate(currentUser._id, { $push: { topics: topic._id } }, { new: true });
+                return topic;
             } 
             catch (err) {
-
                 console.error(err);
                 throw new Error(err.message || "Failed to create topic!");
             }
         },
 
-        updateTopic: async (_, { topicId, input }, context) => {
-        
+        updateTopic: async (parent, { topicId, input }, context) => {
             try {
-
                 const currentUser = context.getUser();
                 if (!currentUser) {
-
-                    throw new Error("You must be logged in to update this topic.");
+                    throw new Error("You must be logged in to edit this topic!");
                 }
                     
                 if (currentUser.role !== "ADMIN") {
-
-                    throw new Error("You don't have permission to update this topic.");
+                    throw new Error("You don't have permission to edit this topic!");
                 }
                 
-                const updatedTopic = await Topic.findByIdAndUpdate(topicId, input, { new: true });
-                return updatedTopic;
+                const { title, description } = input;
+                if (!title || !description) {
+                    throw new Error("All fields are required!");
+                }
+
+                const topic = await Topic.findById(topicId);
+                topic.title = title;
+                topic.description = description;
+                await topic.save();
+                return topic;
             } 
             catch (err) {
-
                 console.error(err);
-                throw new Error(err.message || "Failed to update topic!");
+                throw new Error(err.message || "Failed to edit topic!");
             }
         },
 
-        deleteTopic: async (_, { topicId }, context) => {
-
+        deleteTopic: async (parent, { topicId }, context) => {
             try {
-                
                 const currentUser = context.getUser();
                 if (!currentUser) {
-
-                    throw new Error("You must be logged in to delete this topic.");
+                    throw new Error("You must be logged in to delete this topic!");
                 }
 
                 const topic = await Topic.findById(topicId);
                 if (!topic) {
-
-                    throw new Error("Article not found!");
+                    throw new Error("Topic not found!");
                 }
 
                 if (currentUser.role !== "ADMIN") {
-
-                    throw new Error("You don't have permission to delete this topic.");
+                    throw new Error("You don't have permission to delete this topic!");
                 }
 
-                const deletedTopic = await Topic.findByIdAndDelete(topicId);
+                if (topic.status !== "INACTIVE") {
+                    throw new Error("Only inactive topics can be deleted!");
+                }
+                
+                await Topic.deleteOne({ _id: topicId });
                 await User.findByIdAndUpdate(topic.adminId, { $pull: { topics: topicId } }, { new: true });
-                return deletedTopic;
+                return topic;
             } 
             catch (err) {
-
                 console.error(err);
                 throw new Error(err.message || "Failed to delete topic!");
             }
@@ -136,21 +125,16 @@ const topicResolvers = {
     },
 
     Subscription: {
-
         newTopicSubscription: {
-
-            subscribe: () => pubsub.asyncIterator(['NEW_TOPIC'])
+            subscribe: () => pubsub.asyncIterator(["NEW_TOPIC"])
         }
     },
 
     Topic: {
-
         author: async (parent) => {
-
             try {
-
-              const author = await User.findById(parent.adminId);
-              return author;
+                const author = await User.findById(parent.adminId);
+                return author;
             } 
             catch (err) {
                 console.error(err);
@@ -159,14 +143,11 @@ const topicResolvers = {
         },
 
         articles: async (parent) => {
-
 			try {
-
 				const articles = await Article.find({ topicId: parent._id });
 				return articles;
 			} 
             catch (err) {
-                
 				console.error(err);
 				throw new Error(err.message || "Failed to fetch topic's articles!");
 			}

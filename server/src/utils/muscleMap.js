@@ -1,5 +1,4 @@
 const muscleMap = {
-    
     "abductors": "abductors",
     "abs": "abs",
     "adductors": "adductors",

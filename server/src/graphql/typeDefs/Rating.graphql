@@ -1,5 +1,4 @@
 type Rating {
-    
     _id: ID!
     authorId: ID!
     programId: ID! 
@@ -12,24 +11,20 @@ type Rating {
 }
 
 input RatingInput {
-
     stars: Int!
     message: String
 }
 
 type Query {
-
     ratingsByProgram(programId: ID!): [Rating]
 }
 
 type Mutation {
-
     addRating(programId: ID!, input: RatingInput!): Rating
     updateRating(ratingId: ID!, input: RatingInput!): Rating
     deleteRating(ratingId: ID!): Rating
 }
 
 type Subscription {
-
     newRatingSubscription(programId: ID!): Rating
 }

@@ -9,7 +9,6 @@ export const NEW_ARTICLE_SUBSCRIPTION = gql`
             createdAtFormatted
             updatedAtFormatted
             totalComments
-            totalViews
             topic {
                 _id
                 title

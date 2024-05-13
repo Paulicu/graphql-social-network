@@ -1,5 +1,4 @@
 type Article {
-    
     _id: ID!
     topicId: ID!
     authorId: ID!
@@ -13,37 +12,30 @@ type Article {
     updatedAtFormatted: String!
     comments: [Comment]
     totalComments: Int
-    viewers: [User]
-    totalViews: Int
 }
 
 type Query {
-
     articles(sortBy: SortOption, topicId: ID): [Article!]
     article(articleId: ID!): Article
 }
 
 type Mutation {
-
     createArticle(input: ArticleInput!): Article
     updateArticle(articleId: ID!, input: ArticleInput!): Article
     deleteArticle(articleId: ID!): Article
 }
 
 type Subscription {
-
     newArticleSubscription: Article
 }
 
 input ArticleInput {
-
     title: String!
     content: String!
     topic: String!
 }
 
 enum SortOption {
-
     NEWEST
     OLDEST
 }

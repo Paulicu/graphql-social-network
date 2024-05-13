@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import { useQuery, useMutation } from '@apollo/client';
 import { CREATE_ARTICLE } from '../../graphql/mutations/article';
@@ -8,13 +9,16 @@ function AddArticleModal() {
 
     const [showModal, setShowModal] = useState(false);
     const [articleData, setArticleData] = useState({ title: "", content: "", topic: "" });
-
+    const redirect = useNavigate();
     const { data } = useQuery(GET_TOPICS);
     
-    const [createArticle] = useMutation(CREATE_ARTICLE, 
+    const [createArticle, { loading, error }] = useMutation(CREATE_ARTICLE, 
     { 
         variables: { input: articleData },
-        refetchQueries: ["GetArticles", "GetTopics"] 
+        onCompleted: (mutation) => {
+            redirect(`/article/${ mutation.createArticle._id }`);
+        },
+        refetchQueries: ["GetTopics"] 
     });
 
     const toggleModal = () => {
@@ -69,7 +73,6 @@ function AddArticleModal() {
                                     name="title"
                                     value={ articleData.title }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
 
@@ -84,7 +87,6 @@ function AddArticleModal() {
                                     name="content"
                                     value={ articleData.content }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
 
@@ -93,7 +95,7 @@ function AddArticleModal() {
                                     Topic
                                 </label>
 
-                                <select id="topic" name="topic" value={ articleData.topic } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black" required>
+                                <select id="topic" name="topic" value={ articleData.topic } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black">
                                     <option value="">Select a topic ...</option>
 
                                     { data.topics.map((topic) => (
@@ -103,17 +105,15 @@ function AddArticleModal() {
                                     ))}
                                 </select>
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={toggleModal}>
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Create
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Creating..." : "Create" }
                                 </button>
-
-                                
                             </div>
                         </form>
                     </div>

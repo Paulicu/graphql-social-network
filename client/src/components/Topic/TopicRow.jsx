@@ -27,7 +27,7 @@ function TopicRow({ topic, onSelectTopic, selectedTopic }) {
                 { (currentUser && currentUser.role === "ADMIN") && (
                     <>
                         <UpdateTopicModal topic={ topic } />
-                        <DeleteTopicButton topicId={ topic._id } />
+                        { (topic.status === "INACTIVE") && <DeleteTopicButton topicId={ topic._id } /> }
                     </>)
                 }
             </div>

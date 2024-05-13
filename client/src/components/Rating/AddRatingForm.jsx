@@ -6,10 +6,10 @@ function AddRatingForm({ programId }) {
 
     const [ratingData, setRatingData] = useState({ stars: 0, message: ""});
 
-    const [addRating] = useMutation(ADD_RATING, 
+    const [addRating, { loading, error }] = useMutation(ADD_RATING, 
     {
         variables: { programId, input: ratingData },
-        refetchQueries: ["GetRatingsByProgram", "GetPrograms", "GetProgram"],
+        refetchQueries: ["GetPrograms", "GetProgram"],
     });
 
     const handleSubmit = async () => {
@@ -63,9 +63,9 @@ function AddRatingForm({ programId }) {
                 placeholder="Add a message (optional) ..."
                 className="w-full p-2 border rounded mt-2"
             />
-
-            <button onClick={ handleSubmit } className="mt-2 bg-black text-white py-2 px-4 rounded">
-                Add Rating
+            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
+            <button onClick={ handleSubmit } disabled={ loading } className="mt-2 bg-black text-white py-2 px-4 rounded">
+                { loading ? "Adding Rating..." : "Add Rating" }
             </button>
         </div>
     );

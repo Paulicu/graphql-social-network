@@ -1,5 +1,4 @@
 type User {
-
     _id: ID!
     role: Role!
     firstName: String!
@@ -17,29 +16,26 @@ type User {
     articles: [Article]
     totalArticles: Int
     workouts: [Workout]
+    programs: [Program]
 }
 
 enum Role {
-
     ADMIN
     MEMBER
 }
 
 enum Gender {
-    
     MALE
     FEMALE
 }
 
 type Query {
-
     users: [User!]
     authUser: User
     user(userId: ID!): User
 }
 
 type Mutation {
-
     register(input: RegisterInput!): User
     login(input: LoginInput!): User
     logout: LogoutResponse
@@ -47,7 +43,6 @@ type Mutation {
 }
 
 input RegisterInput {
-
     firstName: String!
     lastName: String!
     username: String!
@@ -57,12 +52,10 @@ input RegisterInput {
 }
 
 input LoginInput {
-
     username: String!
     password: String!
 }
 
 type LogoutResponse {
-    
     message: String!
 }

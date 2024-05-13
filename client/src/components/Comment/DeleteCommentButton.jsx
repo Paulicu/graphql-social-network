@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { DELETE_COMMENT } from '../../graphql/mutations/comment';
-
+import { GET_ARTICLES } from '../../graphql/queries/article';
 import { FaTrash } from 'react-icons/fa';
 
 function DeleteCommentButton({ commentId }) {
@@ -8,7 +8,7 @@ function DeleteCommentButton({ commentId }) {
     const [deleteComment] = useMutation(DELETE_COMMENT, { 
 
         variables: { commentId }, 
-        refetchQueries: ["GetCommentsByArticle", "GetArticles"] 
+        refetchQueries: ["GetCommentsByArticle", { query: GET_ARTICLES }] 
     });
 
     const handleDelete = async () => {

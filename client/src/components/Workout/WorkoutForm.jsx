@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_WORKOUT } from '../../graphql/mutations/workout';
+import { GET_WORKOUTS } from '../../graphql/queries/workout';
 
 function WorkoutForm({ selectedExercises, setSelectedExercises }) {
 
-    const [createWorkout, { loading, error }] = useMutation(CREATE_WORKOUT);
+    const [createWorkout, { loading, error }] = useMutation(CREATE_WORKOUT, {
+        refetchQueries: [{ query: GET_WORKOUTS }]
+    });
 
     const [workoutData, setWorkoutData] = useState({ title: "", description: "", difficulty: "", exercises: [] });
 

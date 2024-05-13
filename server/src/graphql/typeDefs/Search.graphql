@@ -1,6 +1,5 @@
 union SearchResult = Article | Exercise | Workout | Program
 
 type Query {
-    
-  search(contains: String): [SearchResult!]
+    search(contains: String): [SearchResult!]
 }

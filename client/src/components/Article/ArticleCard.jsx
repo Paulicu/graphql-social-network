@@ -39,10 +39,6 @@ function ArticleCard({ article }) {
                     Comments: { article.totalComments }
                 </span>
 
-                <span className="">
-                    Views: { article.totalViews }
-                </span>
-
                 <Link to={ `/article/${ article._id }` } className="text-black hover:underline">
                     Read more
                 </Link>

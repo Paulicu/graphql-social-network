@@ -17,7 +17,6 @@ export const CREATE_ARTICLE = gql`
                 title
             }
             totalComments
-            totalViews
         }
     }
 `;

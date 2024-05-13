@@ -8,7 +8,7 @@ function UpdateTopicModal({ topic }) {
     const [showModal, setShowModal] = useState(false);
     const [topicData, setTopicData] = useState({ title: topic.title, description: topic.description });
 
-    const [updateTopic] = useMutation(UPDATE_TOPIC, 
+    const [updateTopic, { loading, error }] = useMutation(UPDATE_TOPIC, 
     { 
         variables: { topicId: topic._id, input: topicData },
         refetchQueries: ["GetTopics", "GetArticles"] 
@@ -84,14 +84,14 @@ function UpdateTopicModal({ topic }) {
                                     required 
                                 />
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={ toggleModal }>
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Save
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Saving..." : "Save" }
                                 </button>
                             </div>
                         </form>

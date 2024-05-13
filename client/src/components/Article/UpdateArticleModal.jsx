@@ -17,7 +17,7 @@ function UpdateArticleModal({ article }) {
 
     const { data: topicsData } = useQuery(GET_TOPICS);
 
-    const [updateArticle] = useMutation(UPDATE_ARTICLE, 
+    const [updateArticle, { loading, error }] = useMutation(UPDATE_ARTICLE, 
     { 
         variables: { articleId: article._id, input: articleData },
         refetchQueries: [
@@ -78,7 +78,6 @@ function UpdateArticleModal({ article }) {
                                     name="title"
                                     value={ articleData.title }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
 
@@ -93,7 +92,6 @@ function UpdateArticleModal({ article }) {
                                     name="content"
                                     value={ articleData.content }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
 
@@ -102,7 +100,7 @@ function UpdateArticleModal({ article }) {
                                     Topic
                                 </label>
 
-                                <select id="topic" name="topic" value={ articleData.topic } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black" required>
+                                <select id="topic" name="topic" value={ articleData.topic } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black">
                                     <option value="">Select a topic</option>
 
                                     { topicsData.topics.map((topic) => (
@@ -112,14 +110,14 @@ function UpdateArticleModal({ article }) {
                                     ))}
                                 </select>
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={ toggleModal }>
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Save
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Saving..." : "Save" }
                                 </button>
                             </div>
                         </form>

@@ -69,7 +69,7 @@ const ProgramForm = () => {
             <form onSubmit={ handleSubmit } className="space-y-4">
                 <div>
                     <label className="block mb-2 text-sm font-medium text-gray-700">Title:</label>
-                    <input type="text" name="title" value={ programData.title } onChange={ handleInputChange } required className="border border-gray-300 px-3 py-2 rounded-md w-full" />
+                    <input type="text" name="title" value={ programData.title } onChange={ handleInputChange } className="border border-gray-300 px-3 py-2 rounded-md w-full" />
                 </div>
 
                 <div>
@@ -77,7 +77,7 @@ const ProgramForm = () => {
                         Goal:
                     </label>
 
-                    <select name="goal" value={ programData.goal } onChange={ handleInputChange } required className="border border-gray-300 px-3 py-2 rounded-md w-full">
+                    <select name="goal" value={ programData.goal } onChange={ handleInputChange } className="border border-gray-300 px-3 py-2 rounded-md w-full">
                         <option value="">Select a Goal ...</option>
                         <option value="Muscle Gain">Muscle Gain</option>
                         <option value="Weight Loss">Weight Loss</option>

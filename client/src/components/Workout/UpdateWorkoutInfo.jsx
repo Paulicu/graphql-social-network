@@ -14,7 +14,7 @@ function UpdateWorkoutInfo({ workout }) {
         description: workout.description
     });
 
-    const [updateWorkout] = useMutation(UPDATE_WORKOUT_INFO, 
+    const [updateWorkout, { loading, error }] = useMutation(UPDATE_WORKOUT_INFO, 
     {
         variables: { workoutId: workout._id, input: workoutData },
         refetchQueries: [{ query: GET_WORKOUT, variables: { workoutId: workout._id } }]
@@ -71,7 +71,6 @@ function UpdateWorkoutInfo({ workout }) {
                                     value={ workoutData.title }
                                     onChange={ handleChange }
                                     className="mt-1 p-2 w-full border rounded-md text-black"
-                                    required
                                 />
                             </div>
 
@@ -80,7 +79,7 @@ function UpdateWorkoutInfo({ workout }) {
                                     Difficulty
                                 </label>
 
-                                <select id="difficulty" name="difficulty" value={ workoutData.difficulty } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black" required>
+                                <select id="difficulty" name="difficulty" value={ workoutData.difficulty } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black">
                                     <option value="BEGINNER">Beginner</option>
                                     <option value="INTERMEDIATE">Intermediate</option>
                                     <option value="ADVANCED">Advanced</option>
@@ -98,17 +97,16 @@ function UpdateWorkoutInfo({ workout }) {
                                     value={ workoutData.description }
                                     onChange={ handleChange }
                                     className="mt-1 p-2 w-full border rounded-md text-black"
-                                    required
                                 />
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" onClick={ toggleModal } className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4">
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Save
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Saving..." : "Save" }
                                 </button>
                             </div>
                         </form>

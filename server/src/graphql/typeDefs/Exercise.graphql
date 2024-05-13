@@ -1,5 +1,4 @@
 type Exercise {
-
     id: String!
     name: String!
     bodyPart: String!
@@ -11,20 +10,17 @@ type Exercise {
 }
 
 input PaginationInput {
-
     limit: Int
     offset: Int
 }
 
 input FiltersInput {
-
-    equipment: [String],
-    bodyParts: [String],
+    equipment: [String]
+    bodyParts: [String]
     targets: [String]
 }
 
 type Query {
-
     exercises(pagination: PaginationInput, filters: FiltersInput): [Exercise!]
     exerciseById(exerciseId: String!): Exercise
     exercisesByName(name: String!): [Exercise]

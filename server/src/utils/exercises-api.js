@@ -1,9 +1,7 @@
-import { RESTDataSource } from '@apollo/datasource-rest';
+import { RESTDataSource } from "@apollo/datasource-rest";
 
 class ExercisesAPI extends RESTDataSource {
-
     constructor(options) {
-
         super(options);
         this.baseURL = process.env.API_URL;
         this.key = process.env.API_KEY;
@@ -12,21 +10,17 @@ class ExercisesAPI extends RESTDataSource {
     }
     
     cacheOptionsFor() {
-        
         return { ttl: 1000 * 60 * 60 * 24 * 7 };
     }
 
     willSendRequest(_path, request) {
-
-        request.headers['X-RapidAPI-Host'] = this.host;
-        request.headers['X-RapidAPI-Key'] = this.key;
+        request.headers["X-RapidAPI-Host"] = this.host;
+        request.headers["X-RapidAPI-Key"] = this.key;
     }
 
     async getExercises() {
-
-        const exercises = await this.get('/exercises?limit=-1');
+        const exercises = await this.get("/exercises?limit=-1");
         exercises.forEach(exercise => {
-
             const cacheKey = `exercise:${ exercise.id }`;
             this.cache.set(cacheKey, JSON.stringify(exercise), this.cacheOptionsFor());
         });
@@ -34,47 +28,39 @@ class ExercisesAPI extends RESTDataSource {
     }
 
     async getExerciseById(id) {
-       
         const cacheKey = `exercise:${ id }`;
         const cachedExercise = await this.cache.get(cacheKey);
         if (cachedExercise) {
-
             return JSON.parse(cachedExercise);
         }
 
-        const data = await this.get(`/exercises/exercise/${ id }`);
-        this.cache.set(cacheKey, JSON.stringify(data), this.cacheOptionsFor());
-        return data;
+        const exercise = await this.get(`/exercises/exercise/${ id }`);
+        this.cache.set(cacheKey, JSON.stringify(exercise), this.cacheOptionsFor());
+        return exercise;
     }
 
     async getExercisesByName(name) {
-
-        const searchKey = `search:${ name.toLowerCase() }`;
-        const cachedSearch = await this.cache.get(searchKey);
+        const cacheKey = `search:${ name.toLowerCase() }`;
+        const cachedSearch = await this.cache.get(cacheKey);
         if (cachedSearch) {
-
             return JSON.parse(cachedSearch);
         }
         
-        const data = await this.get(`/exercises/name/${ name }`);
-        this.cache.set(searchKey, JSON.stringify(data), this.cacheOptionsFor());
-        
-        return data;
+        const exercises = await this.get(`/exercises/name/${ name }`);
+        this.cache.set(cacheKey, JSON.stringify(exercises), this.cacheOptionsFor());
+        return exercises;
     }
 
     async getBodyPartList() {
-
-        return this.get('exercises/bodyPartList');
+        return this.get("exercises/bodyPartList");
     }
 
     async getTargetList() {
-
-        return this.get('exercises/targetList');
+        return this.get("exercises/targetList");
     }
 
     async getEquipmentList() {
-
-        return this.get('exercises/equipmentList');
+        return this.get("exercises/equipmentList");
     }
 }
 

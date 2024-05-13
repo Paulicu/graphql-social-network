@@ -1,43 +1,34 @@
-import Program from '../../models/Program.js';
-import User from '../../models/User.js';
-import Workout from '../../models/Workout.js';
-import Rating from '../../models/Rating.js';
+import Program from "../../models/Program.js";
+import User from "../../models/User.js";
+import Workout from "../../models/Workout.js";
+import Rating from "../../models/Rating.js";
 
-import { PubSub } from 'graphql-subscriptions';
+import { PubSub } from "graphql-subscriptions";
 
 const pubsub = new PubSub();
 
 const programResolvers = {
-
     Query: {
-
-        programs: async (_, __) => {
-
+        programs: async () => {
             try {
-
-                const programs = await Program.find();
+                const programs = await Program.find().sort({ createdAt: -1 });
                 return programs;    
             } 
             catch (err) {
-                
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch programs!");
             }
         },
 
-        program: async (_, { programId }) => {
-
+        program: async (parent, { programId }) => {
             try {
-
                 const program = await Program.findById(programId);
                 if (!program) {
-
                     throw new Error(`Could not find Program with ID: ${ programId }!`);
                 }
                 return program;    
             } 
             catch (err) {
-                
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch program!");
             }
@@ -45,23 +36,22 @@ const programResolvers = {
     },
 
     Mutation: {
-
         createProgram: async (_, { input }, context) => {
-
             try {
-                
                 const { getUser } = context;
                 const { title, goal, days } = input;
 
                 const currentUser = getUser();
                 if (!currentUser) {
-
                     throw new Error("You must be logged in to create a program!");
                 }
 
-                if (!days || days.length === 0 || days.length > 7) {
+                if (!title || !goal) {
+                    throw new Error("All fields are required!");
+                }
 
-                    throw new Error("Invalid number of days. Must be between 1 and 7.");
+                if (!days || days.length < 2 || days.length > 7) {
+                    throw new Error("Invalid number of days. Must be between 2 and 7.");
                 }
 
                 for (let i = 0; i < days.length; i++) {
@@ -76,8 +66,7 @@ const programResolvers = {
                     days[i].workoutId = days[i].workoutId || null;
                 }
             
-                const program = new Program(
-                {
+                const program = new Program({
                     authorId: currentUser._id,
                     title,
                     goal,
@@ -85,43 +74,50 @@ const programResolvers = {
                 });
 
                 await program.save();
-                pubsub.publish('NEW_PROGRAM', { newProgramSubscription: program });
+                pubsub.publish("NEW_PROGRAM", { newProgramSubscription: program });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { programs: program._id } }, { new: true });
                 
                 return program;
             } 
             catch (err) {
-                
                 console.error(err);
                 throw new Error(err.message || "Failed to create Program!");
             }
         },
 
-        updateProgram: async (_, { programId, input }, context) => {
-
+        updateProgram: async (parent, { programId, input }, context) => {
             const { getUser } = context;
             const { title, goal, days } = input;
 
             const currentUser = getUser();
 
             if (!currentUser) {
-                throw new Error("You must be logged in to update a program.");
+                throw new Error("You must be logged in to update a program!");
             }
-        
+            
             const program = await Program.findById(programId);
             if (!program) {
-                throw new Error("Program not found.");
+                throw new Error("Program not found!");
             }
-        
-            if (program.authorId.toString() !== currentUser._id.toString()) {
-                throw new Error("You are not authorized to update this program.");
+            const isAdmin = currentUser.role === "ADMIN";
+            const isAuthor = program.authorId.toString() === currentUser._id.toString();
+            if (!isAdmin && !isAuthor) {
+                throw new Error("You are not authorized to update this program!");
+            }
+
+            if (!title || !goal) {
+                throw new Error("All fields are required!");
+            }
+
+            if (!days || days.length < 2 || days.length > 7) {
+                throw new Error("Invalid number of days. Must be between 2 and 7!");
             }
 
             for (let i = 0; i < days.length; i++) {
                 if (days[i].workoutId) {
                     const workout = await Workout.findById(days[i].workoutId);
                     if (!workout) {
-                        throw new Error(`Workout with ID ${days[i].workoutId} does not exist.`);
+                        throw new Error(`Workout with ID ${ days[i].workoutId } does not exist!`);
                     }
                 }
                 days[i].dayNumber = i + 1;
@@ -132,7 +128,6 @@ const programResolvers = {
             program.title = title;
             program.goal = goal;
             program.days = days;
-
             await program.save();
             return program;
         },
@@ -140,16 +135,13 @@ const programResolvers = {
         deleteProgram: async (_, { programId }, context) => {
 
             const { getUser } = context;
-
             const currentUser = getUser();
             if (!currentUser) {
-
                 throw new Error("You must be logged in to delete this Program!");
             }
             
             const program = await Program.findById(programId);
             if (!program) {
-
                 throw new Error("Program not found!");
             }
 
@@ -157,112 +149,79 @@ const programResolvers = {
             const isAuthor = program.authorId.toString() === currentUser._id.toString();
     
             if (!isAdmin && !isAuthor) {
-
                 throw new Error("You don't have permission to delete this Program!");
             }
 
-            const deletedProgram = await Program.findByIdAndDelete(programId);
-            if (!deletedProgram) {
-
-                throw new Error("Failed to delete Program!");
-            }
-
+            await Program.deleteOne({ _id: programId });
             const ratings = await Rating.find({ programId });
             await Rating.deleteMany({ programId });
-
             for (const rating of ratings) {
-
-                await User.findByIdAndUpdate(rating.userId, { $pull: { ratings: rating._id } }, { new: true });
+                await User.findByIdAndUpdate(rating.authorId, { $pull: { ratings: rating._id } }, { new: true });
             }
             await User.findByIdAndUpdate(program.authorId, { $pull: { programs: programId } }, { new: true });
-            
-            return deletedProgram;
+            return program;
         }
     },
 
     Subscription: {
-
         newProgramSubscription: {
-
-            subscribe: () => pubsub.asyncIterator(['NEW_PROGRAM'])
+            subscribe: () => pubsub.asyncIterator(["NEW_PROGRAM"])
         }
     },
 
     Program: {
-
         author: async (parent) => {
-
             try {
-
                 const author = await User.findById(parent.authorId);
                 return author;
             } 
             catch (err) {
-  
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch Program's author!");
             }
         },
 
         days: async (parent) => {
-
             try {
-
                 const programDays = parent.days.map(async (day) => {
-
                     const { workoutId, dayNumber, isRestDay } = day;
-
                     if (workoutId) {
-
                         const workout = await Workout.findById(workoutId);
                         return { dayNumber, workout, isRestDay };
                     }
-
                     return { dayNumber, isRestDay };
                 });
-
                 const days = await Promise.all(programDays);
                 return days;
             } 
             catch (err) {
-
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch Program's days!");
             }
         },
 
         averageRating: async (parent) => {
-
             try {
-
                 const ratings = await Rating.find({ programId: parent._id });
-
                 if (ratings.length === 0) {
-
                     return 0; 
                 }
-    
                 const totalStars = ratings.reduce((acc, rating) => acc + rating.stars, 0);
                 const averageRating = totalStars / parent.ratings.length;
-                
                 return averageRating;
             } 
             catch (err) {
-
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch average rating for Program!");
             }
         },
 
         ratings: async(parent) => {
-
             try {
-                
                 const ratings = await Rating.find({ programId: parent._id });
                 return ratings;
             } 
             catch (err) {
-                
                 console.error(err);
                 throw new Error(err.message || "Failed to fetch program's ratings");
             }

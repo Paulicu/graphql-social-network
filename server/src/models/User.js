@@ -1,8 +1,7 @@
-import mongoose from 'mongoose';
-import date from 'date-and-time';
+import mongoose from "mongoose";
+import date from "date-and-time";
 
-const userSchema = new mongoose.Schema(
-{
+const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
@@ -59,26 +58,21 @@ const userSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Rating"
     }]
-
 }, { timestamps: true });
 
 userSchema.virtual("createdAtFormatted").get(function () {
-
     return date.format(this.createdAt, "dddd MMM DD, YYYY");
 });
 
-userSchema.virtual('fullName').get(function () {
-
+userSchema.virtual("fullName").get(function () {
     return `${ this.firstName } ${ this.lastName }`;
 });
 
 userSchema.virtual("totalArticles").get(function () {
-
     return this.articles.length;
 });
 
 userSchema.virtual("totalTopics").get(function () {
-
     return this.topics.length;
 });
 

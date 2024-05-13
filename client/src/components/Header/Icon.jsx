@@ -73,19 +73,9 @@ function Icon() {
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md">
                     <ul>
                         { currentUser ? 
-                            (<>
-                                <li>
-                                    <Link to="/profile" onClick={ handleOptionClick } className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                                        Profile
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <button onClick={ handleLogout } disabled={ loading } className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">
-                                        { loading ? "Logging Out..." : "Log Out" }
-                                    </button>
-                                </li>
-                            </>) : 
+                            (<button onClick={ handleLogout } disabled={ loading } className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">
+                               { loading ? "Logging Out..." : "Log Out" }
+                            </button>) : 
 
                             (<>
                                 <li>

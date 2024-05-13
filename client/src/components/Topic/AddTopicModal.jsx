@@ -7,10 +7,9 @@ function AddTopicModal() {
 
     const [showModal, setShowModal] = useState(false);
     const [topicData, setTopicData] = useState({ title: "", description: "" });
-    const [createTopic] = useMutation(CREATE_TOPIC,
+    const [createTopic, { loading, error }] = useMutation(CREATE_TOPIC,
     { 
-        variables: { input: topicData },
-        refetchQueries: ["GetTopics"] 
+        variables: { input: topicData }
     });
 
     const toggleModal = () => {
@@ -66,7 +65,6 @@ function AddTopicModal() {
                                     name="title"
                                     value={ topicData.title }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
 
@@ -81,17 +79,16 @@ function AddTopicModal() {
                                     name="description"
                                     value={ topicData.description }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
-
+                            { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
                                 <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={ toggleModal }>
                                     Cancel
                                 </button>
 
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
-                                    Create
+                                <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                                    { loading ? "Creating..." : "Create" }
                                 </button>                                
                             </div>
                         </form>

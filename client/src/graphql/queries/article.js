@@ -9,7 +9,6 @@ export const GET_ARTICLES = gql`
             createdAtFormatted
             updatedAtFormatted
             totalComments
-            totalViews
             topic {
                 _id
                 title
@@ -32,7 +31,6 @@ export const GET_ARTICLE = gql`
             createdAtFormatted
             updatedAtFormatted
             totalComments
-            totalViews
             topic {
                 _id
                 title

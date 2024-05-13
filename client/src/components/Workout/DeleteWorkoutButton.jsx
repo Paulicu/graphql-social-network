@@ -18,7 +18,7 @@ function DeleteWorkoutButton({ workoutId }) {
 
         try {
 
-            const confirmDelete = window.confirm("Are you sure you want to delete this article?");
+            const confirmDelete = window.confirm("Are you sure you want to delete this workout?");
             if (confirmDelete) {
                 
                 await deleteWorkout();

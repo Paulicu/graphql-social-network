@@ -1,5 +1,4 @@
 type Program {
-
     _id: ID!
     authorId: ID!
     author: User!
@@ -15,7 +14,6 @@ type Program {
 }
 
 type Day {
-
     dayNumber: Int!
     workoutId: ID
     workout: Workout
@@ -23,31 +21,26 @@ type Day {
 }
 
 input ProgramInput {
-
     title: String!
     goal: String!
     days: [DayInput!]!
 }
 
 input DayInput {
-
     workoutId: ID
 }
 
 type Query {
-
     programs: [Program]
     program(programId: ID!): Program
 }
 
 type Mutation {
-
     createProgram(input: ProgramInput!): Program!
     updateProgram(programId: ID!, input: ProgramInput!): Program!
     deleteProgram(programId: ID!): Program
 }
 
 type Subscription {
-
     newProgramSubscription: Program
 }

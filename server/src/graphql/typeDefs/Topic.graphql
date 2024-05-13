@@ -1,5 +1,4 @@
 type Topic {
-
     _id: ID!
     adminId: ID!
     title: String!
@@ -15,31 +14,26 @@ type Topic {
 }
 
 enum Status {
-
     ACTIVE
     INACTIVE
 }
 
 type Query {
-    
     topics: [Topic!]
     topic(topicId: ID!): Topic
 }
 
 type Mutation {
-
     createTopic(input: TopicInput!): Topic
     updateTopic(topicId: ID!, input: TopicInput!): Topic
     deleteTopic(topicId: ID!): Topic
 }
 
 type Subscription {
-
     newTopicSubscription: Topic
 }
 
 input TopicInput {
-
     title: String!
     description: String!
 }

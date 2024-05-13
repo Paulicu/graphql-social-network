@@ -58,16 +58,15 @@ function UpdateProgramForm({ program }) {
         <form onSubmit={ handleSubmit } className="space-y-4">
             <div>
                 <label>Title:</label>
-                <input type="text" name="title" value={programData.title} onChange={ handleChange } required />
+                <input type="text" name="title" value={programData.title} onChange={ handleChange } />
             </div>
 
             <div>
                 <label>Goal:</label>
-                <select name="goal" value={ programData.goal } onChange={ handleChange } required>
-                    <option value="Weight Loss">Weight Loss</option>
+                <select name="goal" value={ programData.goal } onChange={ handleChange }>  
                     <option value="Muscle Gain">Muscle Gain</option>
-                    <option value="Strength Training">Strength Training</option>
-                    <option value="Endurance">Endurance</option>
+                    <option value="Weight Loss">Weight Loss</option>
+                    <option value="Strength Gain">Strength Gain</option>
                 </select>
             </div>
 
