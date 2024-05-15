@@ -2,11 +2,9 @@ import { useQuery } from '@apollo/client';
 import { GET_EXERCISE_FILTERS } from '../../graphql/queries/exercise';
 
 function ExerciseFilters({ selectedFilters, onChange }) {
-
     const { loading, error, data } = useQuery(GET_EXERCISE_FILTERS);
 
     const handleCheckboxChange = (filterType, value) => {
-
         onChange(filterType, value);
     };
 
@@ -14,7 +12,6 @@ function ExerciseFilters({ selectedFilters, onChange }) {
     if (error) return <p>Something went wrong! { error.message }</p>;
 
     return (
-
         <div className="grid grid-cols-3 gap-4 bg-white rounded-md shadow-md p-4">
             <div className="col-span-1">
                 <h3 className="mb-2 text-lg font-semibold">
@@ -31,7 +28,6 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                                 checked={ selectedFilters.equipment.includes(equipment) }
                                 onChange={ (e) => handleCheckboxChange("equipment", e.target.value) }
                             />
-
                             { equipment }
                         </label>))
                     }
@@ -53,7 +49,6 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                                 checked={ selectedFilters.bodyParts.includes(bodyPart) }
                                 onChange={ (e) => handleCheckboxChange("bodyParts", e.target.value) }
                             />
-
                             { bodyPart }
                         </label>))
                     }
@@ -75,7 +70,6 @@ function ExerciseFilters({ selectedFilters, onChange }) {
                                 checked={ selectedFilters.targets.includes(target) }
                                 onChange={ (e) => handleCheckboxChange("targets", e.target.value) }
                             />
-                            
                             { target }
                         </label>))
                     }

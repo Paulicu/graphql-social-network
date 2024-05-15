@@ -35,6 +35,12 @@ export const GET_ARTICLE = gql`
                 _id
                 title
                 description
+                createdAtFormatted
+                updatedAtFormatted
+                author {
+                    fullName
+                    profilePicture
+                }
             }
             author {
                 _id

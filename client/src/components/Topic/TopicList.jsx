@@ -28,14 +28,11 @@ function TopicList({ onSelectTopic }) {
     }, [subscribeToMore]);
 
     const handleTopicClick = (topicId) => {
-
         if (selectedTopic === topicId) {
-
             setSelectedTopic(null); 
             onSelectTopic(null); 
         } 
         else {
-
             setSelectedTopic(topicId); 
             onSelectTopic(topicId); 
         }
@@ -45,7 +42,6 @@ function TopicList({ onSelectTopic }) {
     if (error) return <p>Something went wrong! { error.message }</p>;
 
     return (
-        
         <div className="max-w-sm border border-gray-200 bg-white rounded-md shadow-md p-4 mb-4">
             <div className="mb-4 flex items-center justify-between">
                 <h5 className="text-xl font-bold leading-none text-gray-900">

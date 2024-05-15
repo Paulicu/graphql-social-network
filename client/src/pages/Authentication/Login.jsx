@@ -4,16 +4,12 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../graphql/mutations/user';
 
 function Login() {
-
     const [loginData, setLoginData] = useState({ username: "", password: "" });
-
     const [login, { loading, error }] = useMutation(LOGIN, { refetchQueries: ["GetAuthenticatedUser"] });
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await login({ variables: { input: loginData } });
             console.log('User logged in successfully!');
         } 
@@ -24,13 +20,11 @@ function Login() {
     };
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
         setLoginData((prevData) => ({ ...prevData, [name]: value }));
     };
 
     return (
-
         <div className="flex justify-center items-center h-screen">
             <div className="flex bg-gray-300 z-30 rounded-lg overflow-hidden">
                 <div className="flex justify-center items-center bg-gray-100 w-full min-w-80 sm:min-w-96">
@@ -74,7 +68,6 @@ function Login() {
                         <div className="mt-4 text-sm text-gray-600 text-center">
                             <p>
                                 { "Don't" } have an account?{ " " }
-
                                 <Link to='/register' className="text-black font-medium hover:underline">
                                     Register here
                                 </Link>

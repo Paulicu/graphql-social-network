@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useAuth } from '../../utils/context';
 import { GET_WORKOUT } from '../../graphql/queries/workout';
-
+import { FaArrowLeft } from 'react-icons/fa';
 import DeleteWorkoutButton from '../../components/Workout/DeleteWorkoutButton';
 import ExerciseDetails from '../../components/Exercise/ExerciseDetails';
 import WorkoutImage from '../../components/Workout/WorkoutImage';
@@ -26,28 +26,36 @@ function Workout() {
     return (
 
         <div className="bg-gray-100 mx-4 my-4 p-6 rounded-lg shadow-md">
-            { (isAdmin || isAuthor) && (
-                <>
-                    <UpdateWorkoutInfo workout={ workout } />
-                    <DeleteWorkoutButton workoutId={ workout._id } />
-                </>)
-            }
-
+            <div className="flex items-center mb-4">
+                <button className="flex items-center bg-black text-white px-4 py-2 mr-8 rounded-md hover:bg-gray-800">
+                    <Link to="/workouts" className='flex items-center text-white'>
+                        <FaArrowLeft className="mr-2" /> Go Back
+                    </Link>
+                </button>
+                { (isAdmin || isAuthor) && (
+                    <>
+                        <UpdateWorkoutInfo workout={ workout } />
+                        <DeleteWorkoutButton workoutId={ workout._id } />
+                    </>)
+                }
+            </div>
+           
             <h2 className="text-2xl font-bold mb-4">
                 { workout.title }
             </h2>
-
-            <WorkoutImage muscleGroups={ workout.muscleGroups } />
+            
+            <div>
+                <WorkoutImage muscleGroups={ workout.muscleGroups } className="w-1/3 h-1/3"/>
+            </div>
+           
 
             <div className="text-gray-600 mb-4">
                 <p>
                     <span className="font-semibold">Author:</span> { workout.author.fullName }
                 </p>
-
                 <p>
                     <span className="font-semibold">Difficulty:</span> { workout.difficulty }
                 </p>
-                
                 <p>
                     <span className="font-semibold">Description:</span> { workout.description }
                 </p>
@@ -81,7 +89,6 @@ function Workout() {
                 <p>
                     <span className="font-semibold">Created At:</span> { workout.createdAtFormatted }
                 </p>
-
                 <p>
                     <span className="font-semibold">Last Updated At:</span> { workout.updatedAtFormatted }
                 </p>

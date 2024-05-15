@@ -5,45 +5,35 @@ import { UPDATE_RATING } from '../../graphql/mutations/rating';
 import { GET_RATINGS_BY_PROGRAM } from '../../graphql/queries/rating';
 
 function UpdateRatingModal({ rating, programId }) {
-
     const [showModal, setShowModal] = useState(false);
     const [ratingData, setRatingData] = useState({ stars: rating.stars, message: rating.message });
 
-    const [updateRating, { loading, error }] = useMutation(UPDATE_RATING, 
-    { 
+    const [updateRating, { loading, error }] = useMutation(UPDATE_RATING, { 
         variables: { ratingId: rating._id, input: ratingData },
         refetchQueries: [{ query: GET_RATINGS_BY_PROGRAM, variables: { programId } }] 
     });
 
     const toggleModal = () => {
-
         setShowModal(!showModal);
     };
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
-
         if (name === "stars") {
-
             setRatingData({ ...ratingData, [name]: parseInt(value) });
         } 
         else {
-
             setRatingData({ ...ratingData, [name]: value});
         }
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await updateRating();
             toggleModal();
         } 
         catch (err) {
-
             console.error(err);
         }
     };
@@ -67,7 +57,7 @@ function UpdateRatingModal({ rating, programId }) {
                                     Stars
                                 </label>
 
-                                <select id="stars" name="stars" value={ ratingData.stars } onChange={ handleChange } required className="mt-1 p-2 w-full border rounded-md text-black">
+                                <select id="stars" name="stars" value={ ratingData.stars } onChange={ handleChange } className="mt-1 p-2 w-full border rounded-md text-black">
                                     <option value={ 0 }>Select Rating ...</option>
                                     <option value={ 1 }>⭐</option>
                                     <option value={ 2 }>⭐⭐</option>
@@ -88,7 +78,6 @@ function UpdateRatingModal({ rating, programId }) {
                                     name="message"
                                     value={ ratingData.message }
                                     onChange={ handleChange }
-                                    required
                                 />
                             </div>
                             { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }

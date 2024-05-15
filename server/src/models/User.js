@@ -53,10 +53,6 @@ const userSchema = new mongoose.Schema({
     programs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Program"
-    }],
-    ratings: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Rating"
     }]
 }, { timestamps: true });
 
@@ -66,14 +62,6 @@ userSchema.virtual("createdAtFormatted").get(function () {
 
 userSchema.virtual("fullName").get(function () {
     return `${ this.firstName } ${ this.lastName }`;
-});
-
-userSchema.virtual("totalArticles").get(function () {
-    return this.articles.length;
-});
-
-userSchema.virtual("totalTopics").get(function () {
-    return this.topics.length;
 });
 
 const User = mongoose.model("User", userSchema);

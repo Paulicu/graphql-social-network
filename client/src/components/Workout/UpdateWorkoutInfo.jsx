@@ -7,40 +7,33 @@ import { FaEdit } from 'react-icons/fa';
 function UpdateWorkoutInfo({ workout }) {
 
     const [showModal, setShowModal] = useState(false);
-    const [workoutData, setWorkoutData] = useState(
-    {
+    const [workoutData, setWorkoutData] = useState({
         title: workout.title,
         difficulty: workout.difficulty,
         description: workout.description
     });
 
-    const [updateWorkout, { loading, error }] = useMutation(UPDATE_WORKOUT_INFO, 
-    {
+    const [updateWorkout, { loading, error }] = useMutation(UPDATE_WORKOUT_INFO, {
         variables: { workoutId: workout._id, input: workoutData },
         refetchQueries: [{ query: GET_WORKOUT, variables: { workoutId: workout._id } }]
     });
 
     const toggleModal = () => {
-
         setShowModal(!showModal);
     };
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
         setWorkoutData({ ...workoutData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await updateWorkout();
             toggleModal();
         } 
         catch (err) {
-
             console.error("Error updating workout:", err);
         }
     };

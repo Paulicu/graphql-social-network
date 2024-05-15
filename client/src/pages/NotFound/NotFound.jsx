@@ -2,9 +2,7 @@ import { Link } from 'react-router-dom';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
 function NotFound() {
-
     return (
-        
         <div className="flex items-center justify-center h-screen flex-col space-y-4 text-center">
             <FaExclamationTriangle className="text-4xl text-yellow-500 w-40 h-40" />
 

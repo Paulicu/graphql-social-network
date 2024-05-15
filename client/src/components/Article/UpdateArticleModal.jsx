@@ -6,10 +6,8 @@ import { GET_TOPICS } from '../../graphql/queries/topic';
 import { FaEdit } from 'react-icons/fa';
 
 function UpdateArticleModal({ article }) {
-
     const [showModal, setShowModal] = useState(false);
-    const [articleData, setArticleData] = useState(
-    { 
+    const [articleData, setArticleData] = useState({ 
         title: article.title, 
         content: article.content, 
         topic: article.topic.title 
@@ -17,8 +15,7 @@ function UpdateArticleModal({ article }) {
 
     const { data: topicsData } = useQuery(GET_TOPICS);
 
-    const [updateArticle, { loading, error }] = useMutation(UPDATE_ARTICLE, 
-    { 
+    const [updateArticle, { loading, error }] = useMutation(UPDATE_ARTICLE, { 
         variables: { articleId: article._id, input: articleData },
         refetchQueries: [
             { query: GET_ARTICLE, variables: { articleId: article._id } },
@@ -27,32 +24,26 @@ function UpdateArticleModal({ article }) {
     });
 
     const toggleModal = () => {
-
         setShowModal(!showModal);
     };
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
         setArticleData({ ...articleData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await updateArticle();
             toggleModal();
         } 
         catch (err) {
-
             console.error(err);
         }
     };
 
     return (
-
         <>
             <button onClick={ toggleModal } className="flex items-center bg-black text-white px-4 py-2 mr-4 rounded-md hover:bg-gray-800">
                 <FaEdit className="mr-2" /> Edit Article

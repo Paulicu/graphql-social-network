@@ -28,7 +28,7 @@ function ProgramList() {
 
     return (
 
-        <div className="max-w-sm border border-gray-200 bg-white rounded-md shadow-md p-4 mb-4">
+        <div className="border border-gray-200 bg-white rounded-md shadow-md p-4 mb-4">
             <div className="mb-4 flex items-center justify-between">
                 <h5 className="text-xl font-bold leading-none text-gray-900">
                     Available Programs

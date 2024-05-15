@@ -6,32 +6,26 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 import SearchResults from './SearchResults';
 
 function SearchBar() {
-
     const [searchItem, setSearchItem] = useState("");
 
     const [search, { loading, error, data }] = useLazyQuery(SEARCH, { variables: { contains: searchItem } });
 
     useEffect(() => {
-
         if (searchItem && searchItem.length > 2) {
-
             search();
         }
 
     }, [searchItem, search]);
 
     const handleChange = (e) => {
-
         setSearchItem(e.target.value);
     };
 
     const clearInput = () => {
-
         setSearchItem("");
     };
 
     return (
-
         <div className="relative">
             <div className="flex items-center border border-gray-300 rounded overflow-hidden">
                 <input

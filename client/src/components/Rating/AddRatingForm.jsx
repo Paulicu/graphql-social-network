@@ -5,42 +5,32 @@ import { ADD_RATING } from '../../graphql/mutations/rating';
 function AddRatingForm({ programId }) {
 
     const [ratingData, setRatingData] = useState({ stars: 0, message: ""});
-
-    const [addRating, { loading, error }] = useMutation(ADD_RATING, 
-    {
+    const [addRating, { loading, error }] = useMutation(ADD_RATING, {
         variables: { programId, input: ratingData },
         refetchQueries: ["GetPrograms", "GetProgram"],
     });
 
     const handleSubmit = async () => {
-
         try {
-
             await addRating();
             setRatingData({ stars: 0, message: "" });
         } 
         catch (err) {
-
             console.error("Error adding Rating:", err);
         }
     };
 
     const handleChange = async(e) => {
-
         const { name, value } = e.target;
-
         if (name === "stars") {
-
             setRatingData({ ...ratingData, [name]: parseInt(value) });
         }
         else {
-
             setRatingData({ ...ratingData, [name]: value});
         }
-    }
+    };
 
     return (
-
         <div className="mt-4">
             <h2 className="text-xl font-semibold mb-2">
                 Add Rating

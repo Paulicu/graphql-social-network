@@ -5,7 +5,6 @@ import { NEW_WORKOUT_SUBSCRIPTION } from '../../graphql/subscriptions/workout';
 import WorkoutCard from './WorkoutCard';
 
 function WorkoutList() {
-
     const { loading, error, data, subscribeToMore } = useQuery(GET_WORKOUTS);
 
     useEffect(() => {

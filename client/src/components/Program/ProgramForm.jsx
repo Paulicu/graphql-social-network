@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 import { CREATE_PROGRAM } from '../../graphql/mutations/program';
 import { GET_WORKOUTS } from '../../graphql/queries/workout';
 
-const ProgramForm = () => {
-
+function ProgramForm() {
     const [programData, setProgramData] = useState({
         title: "",
         goal: "",
@@ -13,18 +13,16 @@ const ProgramForm = () => {
     });
 
     const redirect = useNavigate();
-
     const { data: workoutsData, loading: workoutsLoading } = useQuery(GET_WORKOUTS);
-    
     const [createProgram, { loading, error }] = useMutation(CREATE_PROGRAM, {
         variables: {
             input: programData
         },
-        onCompleted: (data) => {
-            redirect(`/program/${data.createProgram._id}`);
+        onCompleted: (mutation) => {
+            redirect(`/program/${ mutation.createProgram._id }`);
         },
         onError: (error) => {
-            console.error("Error creating program:", error);
+            console.error("Error creating program: ", error);
         }
     });
 
@@ -98,18 +96,18 @@ const ProgramForm = () => {
                             }
                         </select>
 
-                        <button type="button" onClick={() => removeDay(index)} className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-700 transition duration-150 ease-in-out">
-                            Remove Day
+                        <button type="button" onClick={() => removeDay(index)} className="flex items-center bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400">
+                            <FaMinus className="mr-2"/> Remove Day
                         </button>
                     </div>))
                 }
 
                 <div className="flex justify-between">
-                    <button type="button" onClick={ addDay } disabled={ programData.days.length >= 7 } className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                        Add Day
+                    <button type="button" onClick={ addDay } disabled={ programData.days.length >= 7 } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 flex items-center">
+                        <FaPlus className="mr-2"/> Add Day
                     </button>
 
-                    <button type="submit" disabled={ loading } className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-150 ease-in-out">
+                    <button type="submit" disabled={ loading } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
                         Create Program
                     </button>
                 </div>
@@ -118,6 +116,6 @@ const ProgramForm = () => {
             </form>
         </div>
     );
-};
+}
 
 export default ProgramForm;

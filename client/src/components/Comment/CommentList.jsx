@@ -6,7 +6,6 @@ import { NEW_COMMENT_SUBSCRIPTION } from '../../graphql/subscriptions/comment';
 import CommentCard from './CommentCard';
 
 function CommentList({ articleId }) {
-
     const { loading, error, data, subscribeToMore } = useQuery(GET_COMMENTS_BY_ARTICLE, { variables: { articleId } });
 
     useEffect(() => {
@@ -29,12 +28,11 @@ function CommentList({ articleId }) {
     }, [articleId, subscribeToMore]);
 
     if (loading) return <p>Loading comments...</p>;
-    if (error) return <p>Error fetching comments: {error.message}</p>;
+    if (error) return <p>Error fetching comments: { error.message }</p>;
 
     const comments = data.commentsByArticle;
 
     return (
-        
         <>
             { !loading && !error && (comments.length > 0 ? (
                 <div>

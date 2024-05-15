@@ -153,11 +153,7 @@ const programResolvers = {
             }
 
             await Program.deleteOne({ _id: programId });
-            const ratings = await Rating.find({ programId });
             await Rating.deleteMany({ programId });
-            for (const rating of ratings) {
-                await User.findByIdAndUpdate(rating.authorId, { $pull: { ratings: rating._id } }, { new: true });
-            }
             await User.findByIdAndUpdate(program.authorId, { $pull: { programs: programId } }, { new: true });
             return program;
         }

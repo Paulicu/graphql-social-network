@@ -6,14 +6,12 @@ import { CREATE_ARTICLE } from '../../graphql/mutations/article';
 import { GET_TOPICS } from '../../graphql/queries/topic';
 
 function AddArticleModal() {
-
     const [showModal, setShowModal] = useState(false);
     const [articleData, setArticleData] = useState({ title: "", content: "", topic: "" });
     const redirect = useNavigate();
     const { data } = useQuery(GET_TOPICS);
     
-    const [createArticle, { loading, error }] = useMutation(CREATE_ARTICLE, 
-    { 
+    const [createArticle, { loading, error }] = useMutation(CREATE_ARTICLE, { 
         variables: { input: articleData },
         onCompleted: (mutation) => {
             redirect(`/article/${ mutation.createArticle._id }`);
@@ -22,43 +20,36 @@ function AddArticleModal() {
     });
 
     const toggleModal = () => {
-
         setShowModal(!showModal);
     };
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
         setArticleData({ ...articleData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await createArticle();
             setArticleData({ title: "", content: "", topic: "" });
             toggleModal();
         } 
         catch (err) {
-
             console.error(err);
         }
     };
 
     return (
         <>
-            <button className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 mr-4 flex items-center" onClick={ toggleModal }>
+            <button onClick={ toggleModal } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 mr-4 flex items-center" >
                 <FaPlus className="mr-2"/> Create Article
             </button>
 
             { showModal && (
-                <div className="fixed inset-0 z-20 overflow-y-auto flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-md w-full max-w-md">
-                        <h2 className="text-2xl font-semibold mb-4">
-                            Create Article
-                        </h2>
+                        <h2 className="text-2xl font-semibold mb-4">Create Article</h2>
 
                         <form onSubmit={ handleSubmit } className="space-y-4">
                             <div>
@@ -107,7 +98,7 @@ function AddArticleModal() {
                             </div>
                             { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
-                                <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={toggleModal}>
+                                <button type="button" onClick={ toggleModal } className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" >
                                     Cancel
                                 </button>
 

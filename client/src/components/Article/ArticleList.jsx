@@ -5,7 +5,6 @@ import { NEW_ARTICLE_SUBSCRIPTION } from '../../graphql/subscriptions/article';
 import ArticleCard from './ArticleCard';
 
 function ArticleList({ sortBy, selectedTopicId }) {
-
     const { loading, error, data, subscribeToMore } = useQuery(GET_ARTICLES, { variables: { sortBy, topicId: selectedTopicId } });
 
     useEffect(() => {
@@ -17,7 +16,7 @@ function ArticleList({ sortBy, selectedTopicId }) {
                 }
                 const newArticle = subscriptionData.data.newArticleSubscription;
                 return { articles: [newArticle, ...prev.articles] };
-            },
+            }
         });
     
         return () => unsubscribe();
@@ -27,7 +26,6 @@ function ArticleList({ sortBy, selectedTopicId }) {
     if (error) return <p>Error fetching articles: { error.message }</p>;
 
     return (
-        
         <>
             { !loading && !error && (data.articles.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-3 my-3">

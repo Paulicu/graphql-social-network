@@ -1,23 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
+import { FaMinus } from 'react-icons/fa';
 import { CREATE_WORKOUT } from '../../graphql/mutations/workout';
 import { GET_WORKOUTS } from '../../graphql/queries/workout';
+import { useNavigate } from 'react-router-dom';
 
 function WorkoutForm({ selectedExercises, setSelectedExercises }) {
-
+    const redirect = useNavigate();
     const [createWorkout, { loading, error }] = useMutation(CREATE_WORKOUT, {
+        onCompleted: (mutation) => {
+            redirect(`/workout/${ mutation.createWorkout._id }`);
+        },
         refetchQueries: [{ query: GET_WORKOUTS }]
     });
 
     const [workoutData, setWorkoutData] = useState({ title: "", description: "", difficulty: "", exercises: [] });
 
     useEffect(() => {
-
         setWorkoutData({
-
             ...workoutData,
             exercises: selectedExercises.map(exercise => {
-
                 const existingExercise = workoutData.exercises.find(ex => ex.exerciseId === exercise.id);
                 return existingExercise || { exerciseId: exercise.id, sets: "", repetitions: "" };
             })
@@ -26,34 +28,26 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
     }, [selectedExercises]);
 
     const handleChange = (e) => {
-
         const { name, value, id } = e.target;
-
         if (id.startsWith('sets-') || id.startsWith('repetitions-')) {
-            
             const exId = id.split('-')[1];
             const exercises = workoutData.exercises.map(exercise => exercise.exerciseId === exId ? { ...exercise, [name]: value } : exercise);
             setWorkoutData({ ...workoutData, exercises: exercises });
         } 
         else {
-            
             setWorkoutData({ ...workoutData, [name]: value });
         }
     };
 
     const handleSubmit = async () => {
-
         try {
-            
-            const exercisesData = workoutData.exercises.map(exercise => (
-            {
+            const exercisesData = workoutData.exercises.map(exercise => ({
                 ...exercise,
                 sets: parseInt(exercise.sets),
                 repetitions: parseInt(exercise.repetitions),
             }));
 
-            await createWorkout(
-            { 
+            await createWorkout({ 
                 variables: { input: { ...workoutData, exercises: exercisesData } } 
             });
 
@@ -61,7 +55,6 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
             setWorkoutData({ title: "", description: "", difficulty: "", exercises: [] });
         } 
         catch (err) {
-            
             console.error("Error creating workout:", err);
         }
     };
@@ -72,7 +65,6 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
     };
 
     return (
-
         <div className="mt-6 p-4 bg-white shadow-md rounded-md">
             <h2 className="text-lg font-semibold mb-4">Select Exercises for a Workout</h2>
 
@@ -156,8 +148,8 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
                         />
                     </div>
 
-                    <button onClick={() => removeExercise(exercise.id)}>
-                        Remove
+                    <button onClick={() => removeExercise(exercise.id)} className="flex items-center bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mt-2">
+                        <FaMinus className="mr-2"/> Remove Exercise
                     </button>
                 </div>))
             }

@@ -7,33 +7,27 @@ function AddTopicModal() {
 
     const [showModal, setShowModal] = useState(false);
     const [topicData, setTopicData] = useState({ title: "", description: "" });
-    const [createTopic, { loading, error }] = useMutation(CREATE_TOPIC,
-    { 
+    const [createTopic, { loading, error }] = useMutation(CREATE_TOPIC, { 
         variables: { input: topicData }
     });
 
     const toggleModal = () => {
-
         setShowModal(!showModal);
     };
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
         setTopicData({ ...topicData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await createTopic();
             setTopicData({ title: "", description: "" });
             toggleModal();
         } 
         catch (err) {
-
             console.error('Error creating topic:', err);
         }
     };
@@ -83,7 +77,7 @@ function AddTopicModal() {
                             </div>
                             { error && <p className="text-red-500 mt-2 text-center font-medium">{ error.message }</p> }
                             <div className="flex justify-end">
-                                <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" onClick={ toggleModal }>
+                                <button type="button" onClick={ toggleModal } className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-400 mr-4" >
                                     Cancel
                                 </button>
 

@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 
 function ExerciseCard({ exercise, isSelected, onSelect }) {
-
     return (
-    
         <div className="border border-gray-200 bg-white rounded-md shadow-md p-4 mb-4">
             <h2 className="text-xl font-semibold mb-2">
                 { exercise.name }

@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 
 function Register() {
 
-    const [registerData, setRegisterData] = useState(
-    { 
+    const [registerData, setRegisterData] = useState({ 
         firstName:"", 
         lastName: "", 
         username: "", 
@@ -19,28 +18,21 @@ function Register() {
     const [register, { loading, error }] = useMutation(REGISTER, { refetchQueries: ["GetAuthenticatedUser"] });
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         try {
-
             await register({ variables: { input: registerData } });
         } 
         catch (err) {
-
             console.error("Error registering user:", err);
         }
     };
 
     const handleChange = (e) => {
-
 		const { name, value, type } = e.target;
-
 		if (type === "radio") {
-
 			setRegisterData((prevData) => ({ ...prevData, gender: value }));
 		} 
         else {
-
 			setRegisterData((prevData) => ({ ...prevData, [name]: value }));
 		}
 	};

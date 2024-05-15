@@ -70,9 +70,11 @@ function ExerciseList({ selectedExercises, onSelectExercise }) {
                     />))
                 }
             </div>
-            <button onClick={handleLoadMore}>
-                Load More
-            </button>
+            <div className="flex justify-center mt-6">
+                <button onClick={ handleLoadMore } className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
+                    Load More
+                </button>
+            </div>
         </div>
     );
 }

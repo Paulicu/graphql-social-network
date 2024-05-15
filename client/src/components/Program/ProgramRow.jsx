@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import AverageRating from '../Rating/AverageRating';
 
 function ProgramRow({ program }) {
-
     return (
-
         <li className="py-3 sm:py-4" >
             <div className="flex items-center space-x-4">
                 <div className="min-w-0 flex-1">
@@ -22,7 +20,7 @@ function ProgramRow({ program }) {
             <div className="flex items-center justify-between text-base text-gray-900 mt-2">
                 <p>{ program.totalRatings } ratings</p>
                 
-                <p>Average Rating: { program.averageRating }</p>
+                <p>Average Rating: { program.averageRating.toFixed(1) }</p>
 
                 <AverageRating averageRating={ program.averageRating } />
             </div>

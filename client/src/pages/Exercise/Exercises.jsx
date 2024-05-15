@@ -4,19 +4,16 @@ import ExerciseList from '../../components/Exercise/ExerciseList';
 import WorkoutForm from '../../components/Workout/WorkoutForm';
 
 function Exercises() {
-
     const currentUser = useAuth();
     const [selectedExercises, setSelectedExercises] = useState([]);
 
     const handleSelectExercise = (exercise) => {
-
         setSelectedExercises((currentSelectedExercises) =>
             currentSelectedExercises.includes(exercise) ? currentSelectedExercises.filter((ex) => ex.id !== exercise.id) : [...currentSelectedExercises, exercise]
         );
     };
 
     return (
-
         <div className="flex">
             <div className="flex-grow mr-4 mt-4">
                 <ExerciseList selectedExercises={ selectedExercises } onSelectExercise={ handleSelectExercise } />

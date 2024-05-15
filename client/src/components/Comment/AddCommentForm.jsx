@@ -4,37 +4,30 @@ import { ADD_COMMENT } from '../../graphql/mutations/comment';
 import { GET_ARTICLES, GET_ARTICLE } from '../../graphql/queries/article';
 
 function AddCommentForm({ articleId }) {
-
     const [content, setContent] = useState("");
-    const [addComment, { loading, error }] = useMutation(ADD_COMMENT, 
-    {
+    const [addComment, { loading, error }] = useMutation(ADD_COMMENT, {
         variables: { articleId, input: { content } },
         refetchQueries: [
             { query: GET_ARTICLE, variables: { articleId: articleId } },
             { query: GET_ARTICLES }
-        ],
+        ]
     });
 
     const handleSubmit = async () => {
-
         try {
-
             await addComment();
             setContent("");
         } 
         catch (err) {
-
             console.error("Error adding comment:", err);
         }
     };
 
     const handleChange = (e) => {
-        
         setContent(e.target.value);
     };
 
     return (
-
         <div className="mt-4">
             <h2 className="text-xl font-semibold mb-2">
                 Add Comment

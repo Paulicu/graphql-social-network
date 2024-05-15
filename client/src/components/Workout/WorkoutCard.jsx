@@ -40,7 +40,7 @@ function WorkoutCard({ workout }) {
             </div>
             
             <Link to={ `/workout/${ workout._id }` } className="text-black hover:underline">
-                Read more
+                Start Workout
             </Link>
         </div>
     );

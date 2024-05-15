@@ -74,7 +74,7 @@ const articleResolvers = {
                 pubsub.publish("NEW_ARTICLE", { newArticleSubscription: article });
 
                 await User.findByIdAndUpdate(currentUser._id, { $push: { articles: article._id } }, { new: true });
-                await Topic.findByIdAndUpdate(topic._id, { $push: { articles: article._id } }, { new: true });
+                await Topic.findByIdAndUpdate(foundTopic._id, { $push: { articles: article._id } }, { new: true });
 
                 return article;
             } 
@@ -151,11 +151,7 @@ const articleResolvers = {
                 await Article.deleteOne({ _id: articleId });
                 await User.findByIdAndUpdate(article.authorId, { $pull: { articles: articleId } }, { new: true });
                 await Topic.findByIdAndUpdate(article.topicId, { $pull: { articles: articleId } }, { new: true });
-                const comments = await Comment.find({ articleId });
                 await Comment.deleteMany({ articleId });
-                for (const comment of comments) {
-                    await User.findByIdAndUpdate(comment.authorId, { $pull: { comments: comment._id } }, { new: true });
-                }
                 return article;
             } 
             catch (err) {

@@ -5,19 +5,15 @@ import DeleteRatingButton from './DeleteRatingButton';
 import UpdateRatingModal from './UpdateRatingModal';
 
 function RatingCard({ rating }) {
-
     const currentUser = useAuth();
     const isAuthor = currentUser && rating.author._id === currentUser._id;
     const isAdmin = currentUser && (currentUser.role === "ADMIN");
 
     const generateStars = () => {
-
         const stars = [];
         for (let i = 0; i < rating.stars; i++) {
-
             stars.push(<FaRegStar key={ i } className="text-yellow-400" />);
         }
-
         return stars;
     };
     

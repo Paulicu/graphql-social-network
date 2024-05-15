@@ -30,31 +30,23 @@ function App() {
     if (error) return <p>Something went wrong! { error.message }</p>;
 
     return (
-        
         <AuthContext.Provider value={ data.authUser }>
             <Header />
-      
             <Routes>
                 <Route path="/" element={ <Home /> } />
                 <Route path="/login" element={ !data.authUser ? <Login /> : <Navigate to='/' /> } />
                 <Route path="/register" element={ !data.authUser ? <Register /> : <Navigate to='/' /> } />
                 <Route path="/dashboard" element={ (data.authUser && data.authUser.role === "ADMIN") ? <Dashboard /> : <Navigate to='/' /> } />
-
                 <Route path="/articles" element={ <Articles /> } />
                 <Route path="/article/:articleId" element={ <Article /> } />
-
                 <Route path="/exercises" element={ <Exercises /> } />
                 <Route path="/exercise/:exerciseId" element={ <Exercise /> } />
-
                 <Route path="/workouts" element={ <Workouts /> } />
                 <Route path="/workout/:workoutId" element={ <Workout /> } />
-
                 <Route path="/programs" element={ <Programs /> } />
                 <Route path="/program/:programId" element={ <Program /> } />
-
                 <Route path="*" element={ <NotFound /> } />
             </Routes>
-
             <Footer />
         </AuthContext.Provider>
     );

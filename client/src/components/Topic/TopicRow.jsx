@@ -3,11 +3,9 @@ import DeleteTopicButton from './DeleteTopicButton';
 import UpdateTopicModal from './UpdateTopicModal';
 
 function TopicRow({ topic, onSelectTopic, selectedTopic }) {
-
     const currentUser = useAuth();
 
     return (
-
         <li className="py-3 sm:py-4" >
             <div className={ `cursor-pointer flex items-center space-x-4 ${ selectedTopic === topic._id ? 'bg-gray-100 border border-gray-300 rounded-md px-2 p-1' : '' }` } onClick={() => onSelectTopic(topic._id)}>
                 <div className="min-w-0 flex-1">
@@ -18,9 +16,7 @@ function TopicRow({ topic, onSelectTopic, selectedTopic }) {
                     <p className={ `truncate text-sm ${ topic.status === 'ACTIVE' ? 'text-green-500' : 'text-red-500' }` }>
                         { topic.status }: { topic.totalArticles } articles
                     </p>
-                </div>
-
-               
+                </div>   
             </div> 
 
             <div className="inline-flex items-center text-base text-gray-900 mt-2">

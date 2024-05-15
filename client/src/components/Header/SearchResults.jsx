@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
 
 function SearchResults({ loading, error, data, searchItem }) {
-
     const searchResults = data.search;
 
     return (
-            
         <div className="absolute w-full bg-white shadow-lg rounded-md overflow-hidden z-50">
             { loading && <p className="p-4 text-gray-500">Searching for { searchItem }...</p> }
 
