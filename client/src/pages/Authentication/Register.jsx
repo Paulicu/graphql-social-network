@@ -5,7 +5,6 @@ import { REGISTER } from '../../graphql/mutations/user';
 import { Link } from 'react-router-dom';
 
 function Register() {
-
     const [registerData, setRegisterData] = useState({ 
         firstName:"", 
         lastName: "", 

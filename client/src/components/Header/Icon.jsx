@@ -23,7 +23,6 @@ function Icon() {
         }
     };
 
-   
     const toggleDropdown = () => {
         setDropdownOpen((prevState) => !prevState);
     };
@@ -37,13 +36,12 @@ function Icon() {
             setDropdownOpen(false);
         }
     };
-
+    
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener("click", handleClickOutside);
         return () => {
-            document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener("click", handleClickOutside);
         };
-
     }, []);
 
     return (

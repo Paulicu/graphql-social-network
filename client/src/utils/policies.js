@@ -13,7 +13,6 @@ export const typePolicies = {
             },
         },
     },
-
     Program: {
         fields: {
             days: {

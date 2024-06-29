@@ -29,7 +29,7 @@ function WorkoutForm({ selectedExercises, setSelectedExercises }) {
 
     const handleChange = (e) => {
         const { name, value, id } = e.target;
-        if (id.startsWith('sets-') || id.startsWith('repetitions-')) {
+        if (id.startsWith("sets-") || id.startsWith("repetitions-")) {
             const exId = id.split('-')[1];
             const exercises = workoutData.exercises.map(exercise => exercise.exerciseId === exId ? { ...exercise, [name]: value } : exercise);
             setWorkoutData({ ...workoutData, exercises: exercises });

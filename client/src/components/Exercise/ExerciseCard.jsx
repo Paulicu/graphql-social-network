@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../utils/context';
 
 function ExerciseCard({ exercise, isSelected, onSelect }) {
+    const currentUser = useAuth();
     return (
         <div className="border border-gray-200 bg-white rounded-md shadow-md p-4 mb-4">
             <h2 className="text-xl font-semibold mb-2">
@@ -28,7 +30,7 @@ function ExerciseCard({ exercise, isSelected, onSelect }) {
                     See more
                 </Link>
 
-                <input type="checkbox" checked={ isSelected } onChange={ () => onSelect(exercise) } id={ exercise.id } />
+                { currentUser && <input type="checkbox" checked={ isSelected } onChange={ () => onSelect(exercise) } id={ exercise.id } /> }
             </div>
         </div>
     );

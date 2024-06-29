@@ -44,7 +44,7 @@ function Workout() {
                 { workout.title }
             </h2>
             
-            <div>
+            <div className="flex justify-center">
                 <WorkoutImage muscleGroups={ workout.muscleGroups } className="w-1/3 h-1/3"/>
             </div>
            

@@ -36,7 +36,7 @@ const programResolvers = {
     },
 
     Mutation: {
-        createProgram: async (_, { input }, context) => {
+        createProgram: async (parent, { input }, context) => {
             try {
                 const { getUser } = context;
                 const { title, goal, days } = input;
@@ -66,13 +66,7 @@ const programResolvers = {
                     days[i].workoutId = days[i].workoutId || null;
                 }
             
-                const program = new Program({
-                    authorId: currentUser._id,
-                    title,
-                    goal,
-                    days
-                });
-
+                const program = new Program({ authorId: currentUser._id, title, goal, days });
                 await program.save();
                 pubsub.publish("NEW_PROGRAM", { newProgramSubscription: program });
                 await User.findByIdAndUpdate(currentUser._id, { $push: { programs: program._id } }, { new: true });
@@ -132,7 +126,7 @@ const programResolvers = {
             return program;
         },
 
-        deleteProgram: async (_, { programId }, context) => {
+        deleteProgram: async (parent, { programId }, context) => {
 
             const { getUser } = context;
             const currentUser = getUser();

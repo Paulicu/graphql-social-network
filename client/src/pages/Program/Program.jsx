@@ -9,7 +9,6 @@ import { useAuth } from '../../utils/context';
 import UpdateProgramForm from '../../components/Program/UpdateProgramForm';
 
 function Program() {
-    
     const currentUser = useAuth();
     const { programId } = useParams();
     const { loading, data, error } = useQuery(GET_PROGRAM, { variables: { programId } });
@@ -33,43 +32,48 @@ function Program() {
             </div>
            
             <div className="text-lg font-semibold text-gray-700 mb-2">
-                {program.title}
+                { program.title }
             </div>
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <p><strong>Goal:</strong> {program.goal}</p>
-                    <p><strong>Created At:</strong> {program.createdAtFormatted}</p>
-                    <p><strong>Last Updated:</strong> {program.updatedAtFormatted}</p>
-                    <p><strong>Total Workouts:</strong> {program.totalWorkouts}</p>
-                    <p><strong>Total Ratings:</strong> {program.totalRatings}</p>
-                    <p><strong>Average Rating:</strong> {program.averageRating.toFixed(1)}</p>
-                    <p><strong>Author:</strong> {program.author.fullName}</p>
+                    <p><strong>Goal:</strong> { program.goal }</p>
+                    <p><strong>Created At:</strong> { program.createdAtFormatted }</p>
+                    <p><strong>Last Updated:</strong> { program.updatedAtFormatted }</p>
+                    <p><strong>Total Workouts:</strong> { program.totalWorkouts }</p>
+                    <p><strong>Total Ratings:</strong> { program.totalRatings }</p>
+                    <p><strong>Average Rating:</strong> { program.averageRating.toFixed(1) }</p>
+                    <p><strong>Author:</strong> { program.author.fullName }</p>
                 </div>
                 <div>
                     <h2 className="text-lg font-bold text-gray-700">Program Details</h2>
                     <ul className="list-disc pl-5">
-                        {program.days.map((day) => (
+                        { program.days.map((day) => (
                             <li key={day.dayNumber}>
-                                <strong>Day {day.dayNumber}:</strong> {day.isRestDay ? 'Rest Day' : 'Workout Day'}
-                                {day.workout && (
+                                <strong>Day { day.dayNumber }:</strong> { day.isRestDay ? "Rest Day" : "Workout Day" }
+                                { day.workout && (
                                     <div className="ml-4">
-                                        <h3 className="font-semibold">{day.workout.title}</h3>
-                                        <p>Difficulty: {day.workout.difficulty}</p>
+                                        <div className="flex items-center">
+                                            <h3 className="font-semibold mr-2">{ day.workout.title }</h3>
+                                            <Link to={ `/workout/${ day.workout._id }` } className="text-black font-bold hover:underline">
+                                                - START WORKOUT
+                                            </Link>
+                                        </div>
+                                        <p>Difficulty: { day.workout.difficulty }</p>
                                         <ul className="list-disc pl-5">
-                                            {day.workout.exercises.map((exercise, index) => (
-                                                <li key={index}>
-                                                    {exercise.exercise.name} - Sets: {exercise.sets}, Repetitions: {exercise.repetitions}
-                                                </li>
-                                            ))}
+                                            { day.workout.exercises.map((exercise, index) => (
+                                                <li key={ index }>
+                                                    { exercise.exercise.name } - Sets: { exercise.sets }, Repetitions: { exercise.repetitions }
+                                                </li>))
+                                            }
                                         </ul>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
+                                    </div>)
+                                }
+                            </li>))
+                        }
                     </ul>
                 </div>
             </div>
-            { (isAdmin || isAuthor) && <UpdateProgramForm program={program} /> }
+            { (isAdmin || isAuthor) && <UpdateProgramForm program={ program } /> }
             { currentUser && <AddRatingForm programId={ program._id } /> }
             <RatingList programId={ program._id }/>
         </div>

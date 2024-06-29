@@ -47,7 +47,7 @@ const workoutResolvers = {
     },
 
     Mutation: {
-        createWorkout: async (_, { input }, context) => {
+        createWorkout: async (parent, { input }, context) => {
             try {
                 const { getUser, dataSources } = context;
                 const currentUser = getUser();
@@ -79,12 +79,7 @@ const workoutResolvers = {
                 equipmentList = [...new Set(equipmentList)];
                 muscleGroupsList = [...new Set(muscleGroupsList)];
 
-                const workout = new Workout({
-                    authorId: currentUser._id,
-                    title,
-                    difficulty,
-                    description,
-                    exercises,
+                const workout = new Workout({ authorId: currentUser._id, title, difficulty, description, exercises,
                     equipment: equipmentList,
                     muscleGroups: muscleGroupsList
                 });
@@ -195,7 +190,7 @@ const workoutResolvers = {
             }
         },
 
-        removeExerciseFromWorkout: async (_, { workoutId, exerciseId }, context) => {
+        removeExerciseFromWorkout: async (parent, { workoutId, exerciseId }, context) => {
             try {
                 const currentUser = context.getUser();
                 if (!currentUser) {

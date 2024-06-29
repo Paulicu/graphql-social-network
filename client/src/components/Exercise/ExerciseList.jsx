@@ -6,30 +6,21 @@ import ExerciseCard from './ExerciseCard';
 import ExerciseFilters from './ExerciseFilters';
 
 function ExerciseList({ selectedExercises, onSelectExercise }) {
-
+    
     const [selectedFilters, setSelectedFilters] = useState({ equipment: [], bodyParts: [], targets: [] });
     const [offset, setOffset] = useState(0);
-    const { loading, error, data, fetchMore, refetch } = useQuery(GET_EXERCISES, 
-    {
-        variables: {
-            pagination: {
-                offset: offset
-            },
-            filters: selectedFilters
-        }
+
+    const { loading, error, data, fetchMore, refetch } = useQuery(GET_EXERCISES, {
+        variables: { pagination: { offset: offset }, filters: selectedFilters }
     });
 
     useEffect(() => {
         refetch({ filters: selectedFilters });
     }, [selectedFilters, refetch]);
 
-
-
     const handleLoadMore = () => {
         fetchMore({
-            variables: {
-                pagination: { offset: data.exercises.length }
-            },
+            variables: { pagination: { offset: data.exercises.length } },
             updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
                 return {
@@ -41,11 +32,9 @@ function ExerciseList({ selectedExercises, onSelectExercise }) {
     };
 
     const handleFiltersChange = (filterType, value) => {
-
-        setSelectedFilters((prevFilters) => (
-        {
+        setSelectedFilters((prevFilters) => ({
             ...prevFilters,
-            [filterType]: prevFilters[filterType].includes(value) ? prevFilters[filterType].filter((filter) => filter !== value) : [...prevFilters[filterType], value],
+            [filterType]: prevFilters[filterType].includes(value) ? prevFilters[filterType].filter((filter) => filter !== value) : [...prevFilters[filterType], value]
         }));
         setOffset(0); 
     };

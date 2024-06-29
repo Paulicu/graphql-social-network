@@ -11,11 +11,10 @@ function Login() {
         e.preventDefault();
         try {
             await login({ variables: { input: loginData } });
-            console.log('User logged in successfully!');
+            console.log("User logged in successfully!");
         } 
         catch (err) {
-
-            console.error('Error logging in:', err);
+            console.error("Error logging in:", err);
         }
     };
 

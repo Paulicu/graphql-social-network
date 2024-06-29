@@ -10,13 +10,12 @@ function CommentList({ articleId }) {
 
     useEffect(() => {
         const unsubscribe = subscribeToMore({
-        document: NEW_COMMENT_SUBSCRIPTION,
-        variables: { articleId },
+            document: NEW_COMMENT_SUBSCRIPTION,
+            variables: { articleId },
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) {
                     return prev;
                 }
-
                 const newComment = subscriptionData.data.newCommentSubscription;
                 return {
                     ...prev,

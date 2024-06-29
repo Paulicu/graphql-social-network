@@ -10,15 +10,15 @@ function ChangeRoleButton({ userId, currentRole }) {
         },
         refetchQueries: [{ query: GET_USERS }]
     });
-
     const handleRoleChange = () => {
-        const message = currentRole === "ADMIN" ? "Are you sure you want to demote this user to MEMBER?" : "Are you sure you want to promote this user to ADMIN?";
+        const message = currentRole === "ADMIN" ? 
+        "Are you sure you want to demote this user to MEMBER?" : 
+        "Are you sure you want to promote this user to ADMIN?";
         if (window.confirm(message)) {
             changeRole();
         }
     };
-
-    const buttonColor = currentRole === "ADMIN" ? "bg-red-600  hover:bg-red-400" : "bg-green-600 hover:bg-green-400";
+    const buttonColor = currentRole === "ADMIN" ? "bg-red-600 hover:bg-red-400" : "bg-green-600 hover:bg-green-400";
     return (
         <>
             <button onClick={ handleRoleChange } disabled={ loading } className={`flex items-center px-4 py-2 rounded-md text-white ${ buttonColor }` }>

@@ -10,7 +10,7 @@ class ExercisesAPI extends RESTDataSource {
     }
     
     cacheOptionsFor() {
-        return { ttl: 1000 * 60 * 60 * 24 * 7 };
+        return { ttl: 1000 * 60 * 60 * 24 };
     }
 
     willSendRequest(_path, request) {
@@ -19,7 +19,7 @@ class ExercisesAPI extends RESTDataSource {
     }
 
     async getExercises() {
-        const exercises = await this.get("/exercises?limit=-1");
+        const exercises = await this.get(`/exercises?limit=${ process.env.EXERCISE_LIMIT }`);
         exercises.forEach(exercise => {
             const cacheKey = `exercise:${ exercise.id }`;
             this.cache.set(cacheKey, JSON.stringify(exercise), this.cacheOptionsFor());

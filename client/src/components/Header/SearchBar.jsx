@@ -14,7 +14,6 @@ function SearchBar() {
         if (searchItem && searchItem.length > 2) {
             search();
         }
-
     }, [searchItem, search]);
 
     const handleChange = (e) => {

@@ -51,7 +51,7 @@ programSchema.virtual("updatedAtFormatted").get(function () {
 });
 
 programSchema.virtual("totalWorkouts").get(function () {
-    return this.days.length;
+    return this.days.filter(day => day.workoutId !== null).length;
 });
 
 programSchema.virtual("totalRatings").get(function () {

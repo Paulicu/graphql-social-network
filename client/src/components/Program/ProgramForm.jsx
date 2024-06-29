@@ -20,9 +20,6 @@ function ProgramForm() {
         },
         onCompleted: (mutation) => {
             redirect(`/program/${ mutation.createProgram._id }`);
-        },
-        onError: (error) => {
-            console.error("Error creating program: ", error);
         }
     });
 
@@ -40,9 +37,15 @@ function ProgramForm() {
         setProgramData({ ...programData, days: updatedDays });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        createProgram();
+        try {
+            await createProgram();
+        } 
+        catch (err) {
+            console.error("Error creating program: ", err);
+        }
+        
     };
 
     const addDay = () => {
